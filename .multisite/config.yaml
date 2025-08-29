@@ -1,0 +1,5 @@
+sites:
+  demo-gold:
+    origin: https://github.com/ComwrapUkReply/eds-multisite-demo-gold
+  demo-silver:
+    origin: https://github.com/techdivision/eds-multisite-demo-gold
