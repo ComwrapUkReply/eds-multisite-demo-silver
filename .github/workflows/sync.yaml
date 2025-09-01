@@ -52,4 +52,3 @@ jobs:
             # reset for the next iteration
             git reset --hard origin/$GITHUB_REF_NAME
           done < <(yq e '.sites | to_entries[] | [.key, .value.origin] | @tsv' '.multisite/config.yaml')
-          
