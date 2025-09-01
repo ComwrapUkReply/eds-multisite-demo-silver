@@ -41,8 +41,8 @@ jobs:
 
             # commit the changes
             git add .
-            # remove workflow files from the index to avoid pushing them (apps may lack `workflows` permission)
-            git rm --cached -r .github/workflows || true
+            # avoid staging workflow files; GitHub Apps need explicit `workflows` permission to modify these
+            git reset HEAD -- .github/workflows/** || true
             git commit -m"eds-multisite-helper: Override specific site's files for ${folder}"
 
             # add the destination child repo
@@ -54,3 +54,4 @@ jobs:
             # reset for the next iteration
             git reset --hard origin/$GITHUB_REF_NAME
           done < <(yq e '.sites | to_entries[] | [.key, .value.origin] | @tsv' '.multisite/config.yaml')
+          
