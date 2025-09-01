@@ -3,9 +3,9 @@
     --background-color: white;
     --light-color: #f8f8f8;
     --dark-color: #505050;
-    --text-color: white;
-    --link-color: silver
-    --heading-text-color: silver;
+    --text-color: #131313;
+    --heading-text-color: var(--heading-silver-text-color);
+    --link-color: #c30010;
     --link-hover-color: #c30010;
     --header-background: #c30010;
 

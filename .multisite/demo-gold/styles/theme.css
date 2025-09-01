@@ -1,10 +1,10 @@
 :root {
     /* colors */
-    --background-color: rgb(253, 253, 253);
+    --background-color: white;
     --light-color: #f8f8f8;
     --dark-color: #505050;
-    --text-color: red;
-    --heading-text-color: rgb(255, 215, 0);
+    --text-color: #131313;
+    --heading-text-color: var(--heading-gold-text-color);
     --link-color: #1071b0;
     --link-hover-color: #1071b0;
     --header-background: #1071b0;
