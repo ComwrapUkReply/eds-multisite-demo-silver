@@ -41,6 +41,8 @@ jobs:
 
             # commit the changes
             git add .
+            # remove workflow files from the index to avoid pushing them (apps may lack `workflows` permission)
+            git rm --cached -r .github/workflows || true
             git commit -m"eds-multisite-helper: Override specific site's files for ${folder}"
 
             # add the destination child repo
