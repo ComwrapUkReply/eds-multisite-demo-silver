@@ -12,12 +12,11 @@
 
 :root {
   /* colors */
-  --background-color: #fff;
+  --background-color: white;
   --light-color: #f8f8f8;
-  --dark-color: #636262;
-  --heading-gold-text-color: gold;
-  --heading-silver-text-color: silver;
-  --text-color: #0f4577;
+  --dark-color: #505050;
+  --heading-text-color: #200a80;
+  --text-color: #131313;
   --link-color: #3b63fb;
   --link-hover-color: #1d3ecf;
 
@@ -107,7 +106,6 @@ h4,
 h5,
 h6 {
   margin-top: 0.8em;
-  color: var(--heading-text-color);
   margin-bottom: 0.25em;
   font-family: var(--heading-font-family);
   font-weight: 600;

@@ -3,8 +3,8 @@
     --background-color: white;
     --light-color: #f8f8f8;
     --dark-color: #505050;
-    --text-color: #131313;
-    --heading-text-color: var(--heading-gold-text-color);
+    --text-color: green;
+    --heading-text-color: gold;
     --link-color: #1071b0;
     --link-hover-color: #1071b0;
     --header-background: #1071b0;
