@@ -1,13 +1,13 @@
 :root {
     /* colors */
-    --background-color: white;
+    --background-color: rgb(253, 253, 253);
     --light-color: #f8f8f8;
     --dark-color: #505050;
-    --text-color: white;
-    --link-color: silver
-    --heading-text-color: silver;
-    --link-hover-color: #c30010;
-    --header-background: #c30010;
+    --text-color: rgb(255, 215, 0);
+    --heading-text-color: rgb(255, 215, 0);
+    --link-color: #1071b0;
+    --link-hover-color: #1071b0;
+    --header-background: #1071b0;
 
     /* fonts */
     --body-font-family: roboto, roboto-fallback, sans-serif;
