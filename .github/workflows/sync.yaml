@@ -42,7 +42,7 @@ jobs:
             # commit the changes
             git add .
             # avoid staging workflow files; GitHub Apps need explicit `workflows` permission to modify these
-            git reset HEAD -- .github/workflows/** || true
+            git rm --cached -r .github/workflows || true
             git commit -m"eds-multisite-helper: Override specific site's files for ${folder}"
 
             # add the destination child repo
