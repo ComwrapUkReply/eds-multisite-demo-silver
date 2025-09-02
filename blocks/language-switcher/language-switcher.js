@@ -4,6 +4,23 @@ import { getCurrentLocale, getAlternates } from '../../scripts/language-mapping.
 let configCache = null;
 
 /**
+ * Simple placeholder implementation for language switcher
+ * @returns {Object} Default placeholders
+ */
+async function fetchPlaceholders() {
+  // Return default placeholders since this project doesn't have a placeholders system
+  return {
+    selectLanguage: 'Select language and country',
+    availableLanguages: 'Available languages and countries',
+    languageEN: 'English',
+    languageDE: 'Deutsch',
+    languageFR: 'Français',
+    languageIT: 'Italiano',
+    languagePL: 'Polski',
+  };
+}
+
+/**
  * Load language switcher configuration
  * @param {HTMLElement} block The block element
  * @returns {Promise<Object>} Configuration object
@@ -213,13 +230,8 @@ export default async function decorate(block) {
   // Use config locales if available, fallback to empty array
   const allLocales = config.countries ? getConfigLocales(config) : [];
 
-  let placeholders;
-  try {
-    placeholders = await fetchPlaceholders();
-  } catch (error) {
-    console.warn('Could not load placeholders, using defaults:', error);
-    placeholders = {};
-  }
+  // Get placeholders (using simple default implementation)
+  const placeholders = await fetchPlaceholders();
 
   // Create language switcher container
   const container = document.createElement('div');
