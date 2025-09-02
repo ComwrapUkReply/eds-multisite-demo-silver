@@ -1,0 +1,20 @@
+{
+  "en-uk": {
+    "/en/uk/": "/de/ch/",
+    "/en/uk/about": "/de/ch/uber-uns",
+    "/en/uk/products": "/de/ch/produkte",
+    "/en/uk/contact": "/de/ch/kontakt"
+  },
+  "de-ch": {
+    "/de/ch/": "/en/uk/",
+    "/de/ch/uber-uns": "/en/uk/about",
+    "/de/ch/produkte": "/en/uk/products",
+    "/de/ch/kontakt": "/en/uk/contact"
+  },
+  "fr-ch": {
+    "/fr/ch/": "/en/uk/",
+    "/fr/ch/a-propos": "/en/uk/about",
+    "/fr/ch/produits": "/en/uk/products",
+    "/fr/ch/contact": "/en/uk/contact"
+  }
+}

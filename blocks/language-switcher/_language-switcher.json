@@ -1,0 +1,83 @@
+{
+  "definitions": [
+    {
+      "title": "Language Switcher",
+      "id": "language-switcher",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Language Switcher",
+              "model": "language-switcher"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "language-switcher",
+      "fields": [
+        {
+          "component": "text",
+          "name": "title",
+          "label": "Block Title (for authors)",
+          "valueType": "string",
+          "value": "Language Switcher"
+        },
+
+        {
+          "component": "boolean",
+          "name": "showCountryFlags",
+          "label": "Show Country Flags",
+          "valueType": "boolean",
+          "value": true
+        },
+        {
+          "component": "boolean",
+          "name": "groupByCountry",
+          "label": "Group by Country",
+          "valueType": "boolean",
+          "value": true
+        },
+        {
+          "component": "multiselect",
+          "name": "supportedLocales",
+          "label": "Supported Locales",
+          "valueType": "string",
+          "options": [
+            { "name": "🇬🇧 English (UK) - en/uk", "value": "en-uk" },
+            { "name": "🇺🇸 English (US) - en/us", "value": "en-us" },
+            { "name": "🇨🇭 German (Switzerland) - ch/de", "value": "de-ch" },
+            { "name": "🇨🇭 French (Switzerland) - ch/fr", "value": "fr-ch" },
+            { "name": "🇨🇭 Italian (Switzerland) - ch/it", "value": "it-ch" }
+          ],
+          "value": ["en-uk", "de-ch", "fr-ch"]
+        },
+        {
+          "component": "select",
+          "name": "fallbackLocale",
+          "label": "Fallback Locale",
+          "valueType": "string",
+          "options": [
+            { "name": "🇬🇧 English (UK)", "value": "en-uk" },
+            { "name": "🇨🇭 German (Switzerland)", "value": "de-ch" },
+            { "name": "🇨🇭 French (Switzerland)", "value": "fr-ch" }
+          ],
+          "value": "en-uk"
+        },
+
+        {
+          "component": "boolean",
+          "name": "preservePath",
+          "label": "Preserve Path When Switching",
+          "valueType": "boolean",
+          "value": true
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

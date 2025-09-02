@@ -1,5 +1,45 @@
 sitemaps:
   default:
-    source: /query-index.json
-    destination: /sitemap.xml
+    origin: https://main--eds-multisite-demo-main--comwrapukreply.aem.page
     lastmod: YYYY-MM-DD
+    languages:
+      en-uk:
+        source: /en/uk/query-index.json
+        destination: /sitemap-en-uk.xml
+        hreflang: en-GB
+        alternate: /en/uk/{path}
+      en-us:
+        source: /en/us/query-index.json
+        destination: /sitemap-en-us.xml
+        hreflang: en-US
+        alternate: /en/us/{path}
+      de-ch:
+        source: /ch/de/query-index.json
+        destination: /sitemap-de-ch.xml
+        hreflang: de-CH
+        alternate: /ch/de/{path}
+      fr-ch:
+        source: /ch/fr/query-index.json
+        destination: /sitemap-fr-ch.xml
+        hreflang: fr-CH
+        alternate: /ch/fr/{path}
+      de-de:
+        source: /de/de/query-index.json
+        destination: /sitemap-de-de.xml
+        hreflang: de-DE
+        alternate: /de/de/{path}
+      fr-fr:
+        source: /fr/fr/query-index.json
+        destination: /sitemap-fr-fr.xml
+        hreflang: fr-FR
+        alternate: /fr/fr/{path}
+      it-it:
+        source: /it/it/query-index.json
+        destination: /sitemap-it-it.xml
+        hreflang: it-IT
+        alternate: /it/it/{path}
+      pl-pl:
+        source: /pl/pl/query-index.json
+        destination: /sitemap-pl-pl.xml
+        hreflang: pl-PL
+        alternate: /pl/pl/{path}
