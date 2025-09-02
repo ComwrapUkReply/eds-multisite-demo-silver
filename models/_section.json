@@ -51,7 +51,8 @@
         "cards",
         "columns",
         "fragment",
-        "language-switcher"
+        "language-switcher",
+        "quote"
       ]
     }
   ]
