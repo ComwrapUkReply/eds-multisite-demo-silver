@@ -17,18 +17,16 @@
     line-height: 1.6;
 }
 
-.block.quote > div:last-child > div {
+.block.quote .quote-author {
     font-size: small;
     font-style: italic;
-    margin: 0 16px;
+    margin: 16px;
     position: relative;
+    text-align: right;
 }
 
-.block.quote > div:last-child > div::before {
-    bottom: -8px;
-    content: "—";
-    left: 0;
-    position: absolute;
+.block.quote .quote-author::before {
+    content: "— ";
 }
 
 /* Block option styles */
@@ -57,7 +55,7 @@
     color: var(--light-color, #f8f9fa);
 }
 
-.block.quote.dark > div:last-child > div {
+.block.quote.dark .quote-author {
     color: var(--light-color, #dee2e6);
 }
 
@@ -73,6 +71,6 @@
     color: var(--text-color, #495057);
 }
 
-.block.quote.light > div:last-child > div {
+.block.quote.light .quote-author {
     color: var(--secondary-color, #6c757d);
 }
