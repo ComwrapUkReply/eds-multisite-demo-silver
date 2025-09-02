@@ -1,0 +1,111 @@
+{
+  "definitions": [
+    {
+      "title": "Language Switcher",
+      "id": "language-switcher",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Language Switcher",
+              "model": "language-switcher"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "language-switcher",
+      "fields": [
+        {
+          "component": "select",
+          "name": "displayMode",
+          "label": "Display Mode",
+          "valueType": "string",
+          "options": [
+            { "name": "Dropdown", "value": "dropdown" },
+            { "name": "Compact", "value": "compact" },
+            { "name": "Full List", "value": "full" }
+          ],
+          "value": "dropdown"
+        },
+        {
+          "component": "boolean",
+          "name": "showCountryFlags",
+          "label": "Show Country Flags",
+          "valueType": "boolean",
+          "value": true
+        },
+        {
+          "component": "boolean",
+          "name": "groupByCountry",
+          "label": "Group by Country",
+          "valueType": "boolean",
+          "value": true
+        },
+        {
+          "component": "multiselect",
+          "name": "supportedLocales",
+          "label": "Supported Locales",
+          "valueType": "string",
+          "options": [
+            { "name": "English (UK) - en/uk", "value": "en-uk" },
+            { "name": "English (US) - en/us", "value": "en-us" },
+            { "name": "German (Switzerland) - ch/de", "value": "de-ch" },
+            { "name": "French (Switzerland) - ch/fr", "value": "fr-ch" },
+            { "name": "Italian (Switzerland) - ch/it", "value": "it-ch" },
+            { "name": "German (Germany) - de/de", "value": "de-de" },
+            { "name": "French (France) - fr/fr", "value": "fr-fr" },
+            { "name": "Italian (Italy) - it/it", "value": "it-it" },
+            { "name": "Polish (Poland) - pl/pl", "value": "pl-pl" }
+          ],
+          "value": ["en-uk", "de-ch", "fr-ch"]
+        },
+        {
+          "component": "text",
+          "name": "fallbackLocale",
+          "label": "Fallback Locale",
+          "valueType": "string",
+          "value": "en-uk"
+        },
+        {
+          "component": "select",
+          "name": "missingPageBehavior",
+          "label": "Missing Page Behavior",
+          "valueType": "string",
+          "options": [
+            { "name": "Redirect to Homepage", "value": "redirect-to-homepage" },
+            { "name": "Show 404", "value": "show-404" },
+            { "name": "Show Closest Match", "value": "show-closest-match" }
+          ],
+          "value": "redirect-to-homepage"
+        },
+        {
+          "component": "boolean",
+          "name": "preservePath",
+          "label": "Preserve Path When Switching",
+          "valueType": "boolean",
+          "value": true
+        },
+        {
+          "component": "boolean",
+          "name": "autoDetect",
+          "label": "Auto-detect User Language",
+          "valueType": "boolean",
+          "value": true
+        },
+        {
+          "component": "text",
+          "name": "customLabel",
+          "label": "Custom Aria Label",
+          "valueType": "string",
+          "value": "Select language and country"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

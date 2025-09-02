@@ -1,0 +1,193 @@
+/* Language Switcher Block */
+.language-switcher {
+  position: relative;
+  display: inline-block;
+}
+
+.language-switcher-container {
+  position: relative;
+}
+
+.language-switcher-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xxs);
+  padding: var(--spacing-xs) var(--spacing-s);
+  background: var(--color-heart-red);
+  color: var(--color-white);
+  border-radius: 4px;
+  border: 1px solid var(--color-heart-red);
+  font-family: var(--font-family-semibold);
+  font-size: var(--body-font-size-s);
+  cursor: pointer;
+  transition: var(--hover-animation);
+}
+
+.language-switcher-button:hover,
+.language-switcher-button:focus {
+  border: 1px solid var(--color-comwrap-cyan);
+  background-color: var(--color-comwrap-cyan);
+  color: var(--color-white);
+}
+
+.language-switcher-button:focus-visible {
+  outline: 2px solid var(--color-heart-red);
+  outline-offset: 2px;
+}   
+
+.language-code {
+  font-weight: 600;
+}
+
+.language-switcher-globe {
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
+.language-switcher-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  transition: transform 0.3s ease;
+}
+
+.language-switcher-container.open .language-switcher-icon {
+  transform: rotate(180deg);
+}
+
+.language-list {
+  position: absolute;
+  top: calc(100% + var(--spacing-xxs));
+  right: 0;
+  min-width: 200px;
+  max-width: 300px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  box-shadow: var(--shadow-medium);
+  list-style: none;
+  padding: var(--spacing-xs);
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  z-index: 100;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.language-switcher-container.open .language-list {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.language-option {
+  margin: 0;
+  border-bottom: 1px solid var(--color-light-grey);
+}
+
+.language-option:last-child {
+  border-bottom: none;
+}
+
+.language-option a,
+.language-option span {
+  display: block;
+  padding: var(--spacing-xxs) var(--spacing-s);
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: var(--hover-animation);
+  font-size: var(--body-font-size-s);
+}
+
+.language-option a:hover,
+.language-option a:focus {
+  background-color: var(--color-background-hover);
+  color: var(--color-heart-red);
+}
+
+.language-option a:focus-visible {
+  outline: 2px solid var(--color-heart-red);
+  outline-offset: -2px;
+}
+
+.language-option.current span {
+  font-weight: 600;
+  color: var(--color-heart-red);
+  cursor: default;
+}
+
+/* Country group header styles */
+.country-group-header {
+  margin: var(--spacing-xs) 0 var(--spacing-xxs) 0;
+  border-bottom: none;
+  padding: 0;
+}
+
+.country-group-header:first-child {
+  margin-top: 0;
+}
+
+.country-group-header span {
+  display: block;
+  padding: var(--spacing-xxs) var(--spacing-xs);
+  font-weight: 600;
+  font-size: var(--body-font-size-xs);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background-color: var(--color-background-secondary);
+  border-radius: 2px;
+  cursor: default;
+}
+
+/* Enhanced language option styles for flags and country info */
+.language-option a,
+.language-option span {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xxs);
+  padding: var(--spacing-xs) var(--spacing-s);
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: var(--hover-animation);
+  font-size: var(--body-font-size-s);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Flag emoji spacing */
+.language-option a:has-emoji,
+.language-option span:has-emoji {
+  gap: var(--spacing-xs);
+}
+
+/* Mobile styles */
+@media (width < 768px) {
+  .language-switcher-button {
+    padding: var(--spacing-xxs) var(--spacing-xs);
+    font-size: var(--body-font-size-xs);
+  }
+  
+  .language-list {
+    min-width: 120px;
+  }
+  
+  .language-option a,
+  .language-option span {
+    padding: var(--spacing-xxs) var(--spacing-xs);
+    font-size: var(--body-font-size-xs);
+  }
+}
+
+/* Integration with header */
+.header .language-switcher {
+  margin-left: var(--spacing-xs);
+}
+
