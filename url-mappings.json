@@ -1,0 +1,52 @@
+{
+  "data": [
+    {
+      "sourceLocale": "en-uk",
+      "sourcePath": "/",
+      "targetLocale": "de-ch", 
+      "targetPath": "/"
+    },
+    {
+      "sourceLocale": "en-uk",
+      "sourcePath": "/",
+      "targetLocale": "fr-ch",
+      "targetPath": "/"
+    },
+    {
+      "sourceLocale": "en-uk",
+      "sourcePath": "/about",
+      "targetLocale": "de-ch",
+      "targetPath": "/ueber-uns"
+    },
+    {
+      "sourceLocale": "en-uk", 
+      "sourcePath": "/about",
+      "targetLocale": "fr-ch",
+      "targetPath": "/a-propos"
+    },
+    {
+      "sourceLocale": "en-uk",
+      "sourcePath": "/products", 
+      "targetLocale": "de-ch",
+      "targetPath": "/produkte"
+    },
+    {
+      "sourceLocale": "en-uk",
+      "sourcePath": "/products",
+      "targetLocale": "fr-ch", 
+      "targetPath": "/produits"
+    },
+    {
+      "sourceLocale": "en-uk",
+      "sourcePath": "/contact",
+      "targetLocale": "de-ch",
+      "targetPath": "/kontakt"
+    },
+    {
+      "sourceLocale": "en-uk",
+      "sourcePath": "/contact",
+      "targetLocale": "fr-ch",
+      "targetPath": "/contact"
+    }
+  ]
+}

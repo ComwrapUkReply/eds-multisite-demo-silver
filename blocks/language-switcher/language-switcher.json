@@ -1,0 +1,78 @@
+{
+  "countries": {
+    "uk": {
+      "name": "United Kingdom",
+      "flag": "🇬🇧",
+      "languages": ["en"]
+    },
+    "us": {
+      "name": "United States", 
+      "flag": "🇺🇸",
+      "languages": ["en"]
+    },
+    "ch": {
+      "name": "Switzerland",
+      "flag": "🇨🇭", 
+      "languages": ["de", "fr", "it"]
+    },
+    "de": {
+      "name": "Germany",
+      "flag": "🇩🇪",
+      "languages": ["de"]
+    },
+    "fr": {
+      "name": "France",
+      "flag": "🇫🇷",
+      "languages": ["fr"]
+    },
+    "it": {
+      "name": "Italy",
+      "flag": "🇮🇹",
+      "languages": ["it"]
+    },
+    "pl": {
+      "name": "Poland",
+      "flag": "🇵🇱",
+      "languages": ["pl"]
+    }
+  },
+  "languages": {
+    "en": {
+      "name": "English",
+      "nativeName": "English"
+    },
+    "de": {
+      "name": "German",
+      "nativeName": "Deutsch"
+    },
+    "fr": {
+      "name": "French", 
+      "nativeName": "Français"
+    },
+    "it": {
+      "name": "Italian",
+      "nativeName": "Italiano"
+    },
+    "pl": {
+      "name": "Polish",
+      "nativeName": "Polski"
+    }
+  },
+  "display": {
+    "mode": "dropdown",
+    "showCountryFlags": true,
+    "groupByCountry": true
+  },
+  "fallback": {
+    "locale": "en-uk",
+    "behavior": "redirect"
+  },
+  "ui": {
+    "selectLanguage": "Select language and country",
+    "availableLanguages": "Available languages and countries"
+  },
+  "mapping": {
+    "source": "json",
+    "fallbackPath": "/config/url-mappings.json"
+  }
+}
