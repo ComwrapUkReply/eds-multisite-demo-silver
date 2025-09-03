@@ -1,0 +1,122 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Translation and Localization
+The Problem
+Many websites need to support multiple languages as well as multiple countries, markets or regions.
+
+In the past decades the dominant approach has been to operate in a “region” or “market” first approach.
+
+This results in an information architecture that looks something like this…
+
+https://<domain>/ca/
+https://<domain>/ca_fr/
+… or …
+
+https://<domain>/en-ca/
+https://<domain>/en-us/
+Usually this leads to both a duplication of content for many locales that share the same language and the loss of someone in a particular region / market to read content in the language that they are most comfortable in, for example, for a country like Switzerland only German, French and Italian are supported which leaves a English speaker in Switzerland out of luck.
+
+From the outside: SEO impact and visitor impact
+The duplication of content from a public web and SEO perspective is very undesirable as it pollutes public search indexes with redundant information and makes a company lose control of where their audience is sent from the SERP, as search engines will use multiple signals to identify the canonical URLs of a piece of content.
+
+Since users speak, search and think for content in languages for most websites it makes more sense to operate in a language first approach, that lets users interact with the content based on a language not based on a market.
+
+There are certain cases and verticals where there is very little or no overlap of the content that is produced for individual markets in which case of course a market/region based approach is more appropriate. These include industries where branding and regulation is vastly different between countries, but for most international websites that share a lot of the same content across markets it is much more intuitive for the visitor of a website to consume the content by language, and have the ability to consume the content of a website in any language that it is available in, independently of their current geographic location.
+
+On the Inside: The content management problem
+In the past a lot of systems have optimized that ability to create and manage a lot of duplicate content. Given the above statement on the problem of duplicate content this clearly seems like the wrong approach. Beyond creating a subpar SEO and site visitor experience this also contributes to an amplified management problem as content is copied around many times, and no matter how good the tools are this leads to potential conflicts and issues that could have been avoided.
+
+Best Practices around Translation and Localization
+URL and Content Structure
+In AEM we recommend a content and externally visible URL structure that works in two tiers.
+
+The first level focuses on language and the second level focuses on market/region.
+
+Something like:
+
+https://<domain>/en/
+https://<domain>/en/us/
+https://<domain>/en/apac/
+https://<domain>/es/us/
+https://<domain>/es/mx/
+Using hierarchical fallbacks eg. / contains english content or /en/ automatically contains US content are definitely reasonable and should be based on a company's business focus. So for a company whose business is predominantly in the english speaking US, / should serve up the english speaking website for the US.
+
+This is equally applicable for spreadsheet based resources, as for documents. In some cases it may make sense to override language settings with per market settings. A simple example for that is placeholders, where most of the tokens would live in the language folder and would be overridden from the corresponding market folder.
+
+Language and Market detection
+Automatically detecting the language and the market is only a relatively small portion of any multi language and multi market architecture. It cannot be done perfectly and therefore the user should always have the opportunity to self select themselves into a particular market (and language) and keep that decision persisted on their device. There is also legislation that forbids geofencing, which further deemphasizes the importance of automatically trying to detect markets.
+
+Detecting the language is really only relevant if the user in question is a new user who is not following a link from search engine or any other language sensitive context. A user from a search engine will automatically have search content in the language that they would like to get the result in, a user from a paid or social channel will automatically be in the correct language context and will be sent to the corresponding content. As a fall back for language detection the user's browser / operating system language is probably a good bet, but should only be used if there is no other indication.
+
+Detecting a user's market / region is often needed to make sure that the content is localized, but also making sure that commercial offers, currency, legal context with respect to privacy etc. are set up the right way and the website responds correctly. Once the market is detected or selected that’s what will be used for all external services that are market specific as well, for example E-Commerce systems.
+
+Usually a good indication is some form of geo IP or the browser Geo Location API. This should be done completely separately from the language of the content that the consumer is interacting with. It is good practice to allow a user to self select themselves with a region switcher into a different market/region and persist that information on the visitors device.
+
+Handling Translation
+Since a lot of the content in AEM is based on content that is created in word, google docs and spreadsheets there is a broad range of translation support available. There is built-in support for machine translation in both Microsoft Office and Google Workspace applications but since Office formats are extremely common for all translation services and providers there are existing integrations for bulk translation and translation memories that are readily available.
+
+At scale, in situations where translation processes are standardized with internal, bespoke tooling or APIs for very large organizations with a continuous flow of translation needs, we recommend using Microsoft Office or Google Workspace Automation and APIs to connect those.
+
+Built-in document comparison tooling and intuitive accessible versioning allows for great cherry picking of new content or translations.
+
+Handling Localization
+Market specific content should be hosted in the corresponding folder identifying the market, country or region. This is particularly valuable if only a small fraction of the content is localized.
+
+In many cases this includes high traffic pages (eg. landing pages, homepages), local campaign experiments, legal considerations (eg. privacy statements, terms and conditions etc.) as well as settings for a market (eg. currency, etc.).
+
+The goal of this setup is that only content that is actually localized exists for any given market.
+
+Depending on SEO and other needs it may be more advisable to expose the external URLs per locale or decorate the market/region specific content on the same URL, but in many cases it may make sense to expose the market in externally visible URL, something like /en/ca/ for the Canadian homepage.
+
+Link rewriting for localization in practice
+As per the above, considering that a we will have a market context / affinity stored on the users device (sessionStorage, localStorage or cookie) we have to process the links that are in content (and code) to make sure that the links that are shown to the user are pointing to the correct content for the market.
+
+A simple starting point usually are header and footer which are very commonly adjusted for on a per market basis, which means that there is a copy of the corresponding documents in the respective market folder and need to automatically be fetched properly by the code that displays the navigation and the footer. Beyond that cross links and CTAs need to be checked for the existence of content in that locale before they are followed.
+
+The technical implementation of that is usually quite straight forward and relies on a AEM index of all the content that has been localized and made available for a particular market and either an eventhandler for click events and/or rewriting of href attributes, as well as some observation for a given market in content fragment or similar fetch requests.
+
+Detailed Example
+In an example where a website uses english content written the US market as the default and has some minimal content eg. the homepage (index), localized nav and footer that is localized for the UK market the content structure would something like this (in sharepoint):
+
+/en/index.docx
+/en/brands.docx
+/en/footer.docx
+/en/industries.docx
+/en/our-company.docx
+/en/nav.docx
+/en/products.docx
+/en/services.docx
+/en/solutions.docx
+.
+.
+.
+/en/uk/index.docx
+/en/uk/nav.docx
+/en/uk/footer.docx
+This translates to a corresponding URL space of www.mycompany.com/en/ for the US homepage and www.mycompany.com/en/uk/ for the UK homepage. For a visitor from the UK market (detected or self-selected as mentioned above) the localized nav and footer are loaded independently of where they navigate on the site.
+
+A UK visitor to www.mycompany.com/en/brands would see the localized navigation and footer with the corresponding links to additional UK content where needed. Beyond that all the inline links in the /en/ content, that point to content that is also available in the /en/uk/ tree (eg. the homepage in this case) would be dynamically rewritten to point to the corresponding localized version.
+
+The sitemap with HREFLang support would look something like this:
+
+<?xml version="1.0" encoding="utf-8"?>
+ <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+   <loc>https://www.mycompany.com/en/</loc>
+   <lastmod>2022-04-21</lastmod>
+   <xhtml:link rel="alternate" hreflang="en" href="https://www.mycompany.com/en/"/>
+   <xhtml:link rel="alternate" hreflang="en-GB" href="https://www.mycompany.com/en/uk/"/>
+  </url>
+
+  <url>
+   <loc>https://www.mycompany.com/en/brands</loc>
+   <lastmod>2022-04-21</lastmod>
+   <xhtml:link rel="alternate" hreflang="en" href="https://www.mycompany.com/en/brands"/>
+  </url>
+.
+.
+.
+</urlset>

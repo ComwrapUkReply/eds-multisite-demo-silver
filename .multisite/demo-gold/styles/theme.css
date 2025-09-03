@@ -49,4 +49,12 @@
     --search-modal-close-color: #fff;
     --search-modal-border-color: #fff;
     --language-navigation-text-color: #000;
+
+    /* hero colors */
+    --hero-background-color: linear-gradient(200deg,#0c2863, rgb(159, 0, 165)); 
+    --hero-background-color-mobile: #0004ee;
+    --hero-background-color-no-image: #0004ee;
+    --hero-text-color: #fff;
+    --hero-button-color: #fff;
+    --hero-button-hover-color: #fff;
 }
