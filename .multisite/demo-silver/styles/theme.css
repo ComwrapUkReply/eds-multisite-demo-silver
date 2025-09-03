@@ -27,4 +27,25 @@
 
     /* nav height */
     --nav-height: 64px;
+
+    /* Header colors */
+    --background-color-header: silver;
+    --text-navigation-link-size: 18px;
+    --text-color-navigation-link: #0063BE;
+    --text-color-navigation-link-hover: #000;
+    --text-color-navigation-link-active: #000;
+    --background-color-navigation-link-active-hover: #000;
+    --background-color-navigation-link-hover: #000;
+    --background-color-navigation-link-active: #fff;
+    --background-color-submenu: #fff;
+    --text-color-submenu: #000;
+    --text-color-submenu-hover: #000;
+    --text-color-submenu-active: #000;
+    --text-color-submenu-active-hover: #000;
+    --search-icon-text-color: #0063BE;
+    --search-modal-background-color: #0063BE;
+    --search-modal-text-color: #fff;
+    --search-modal-close-color: #fff;
+    --search-modal-border-color: #fff;
+    --language-navigation-text-color: #000;
 }
