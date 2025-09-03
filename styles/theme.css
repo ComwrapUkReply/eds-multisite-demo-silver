@@ -3,10 +3,10 @@
     --background-color: white;
     --light-color: #f8f8f8;
     --dark-color: #505050;
-    --text-color: black;
-    --link-color: #1071b0;
-    --link-hover-color: #1071b0;
-    --header-background: #1071b0;
+    --text-color: #c30010;
+    --link-color: #c30010;
+    --link-hover-color: #c30010;
+    --header-background: #c30010;
 
     /* fonts */
     --body-font-family: roboto, roboto-fallback, sans-serif;
