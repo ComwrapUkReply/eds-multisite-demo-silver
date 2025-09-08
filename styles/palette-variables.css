@@ -1,0 +1,123 @@
+// Palette variables
+
+// Text
+$text-primary-color: var(--text-primary); //body color text
+$text-secondary-color: var(--text-secondary); //heading color text
+$text-tertiary-color: var(--text-tertiary); //link color text
+$text-quaternary-color: var(--text-quaternary); //link color text
+$link-primary-color: var(--link-primary-color); //link color text
+$link-primary-hover-color: var(--link-primary-hover-color); //link hover color
+$link-secondary-color: var(--link-secondary-color); //link color text
+$link-secondary-hover-color: var(--link-secondary-hover-color); //link hover color
+
+// Background
+$background-primary-color: var(--background-primary); //background primary color
+$background-secondary-color: var(--background-secondary); //background secondary color
+$background-tertiary-color: var(--background-tertiary); //background tertiary color
+$background-quaternary-color: var(--background-quaternary); //background quaternary color
+
+// Border
+$border-primary-color: var(--border-primary); //border primary color
+$border-secondary-color: var(--border-secondary); //border secondary color
+$border-tertiary-color: var(--border-tertiary); //border tertiary color
+
+// Button
+$button-font-size:var(--button-font-size); //button font size
+$button-primary-color: var(--button-primary); //button primary color
+$button-primary-border-color: var(--button-primary-border); //button primary border color
+$button-primary-text-color: var(--button-primary-text); //button primary text color
+$button-primary-hover-color: var(--button-primary-hover); //button primary hover color
+$button-secondary-color: var(--button-secondary); //button secondary color
+$button-secondary-border-color: var(--button-secondary-border); //button secondary border color
+$button-secondary-text-color: var(--button-secondary-text); //button secondary text color
+$button-secondary-hover-color: var(--button-secondary-hover); //button secondary hover color
+
+//tab
+$tab-primary-button-text-color: var(--tab-primary-button-text-color); //tab text color
+$tab-primary-button-font-size: var(--tab-primary-button-font-size); //tab font size
+$tab-primary-button-background-color: var(--tab-primary-button-background-color); //tab background color
+$tab-primary-button-border-color: var(--tab-primary-button-border-color); //tab border color
+$tab-primary-button-active-color: var(--tab-primary-button-active-color); //tab active color
+$tab-secondary-button-text-color: var(--tab-secondary-button-text-color); //tab secondary text color
+$tab-secondary-button-background-color: var(--tab-secondary-button-background-color); //tab secondary background color
+$tab-secondary-button-border-color: var(--tab-secondary-button-border-color); //tab secondary border color
+$tab-secondary-button-active-color: var(--tab-secondary-button-active-color); //tab secondary active color
+
+// Accordion
+$accordion-primary-button-text-color: var(--accordion-primary-button-text-color); //accordion button text color
+$accordion-primary-button-text-size: var(--accordion-primary-button-text-size); //accordion button text size
+$accordion-primary-button-background-color: var(--accordion-primary-button-background-color); //accordion button background color
+$accordion-primary-button-border-color: var(--accordion-primary-button-border-color); //accordion button border color
+$accordion-primary-button-active-color: var(--accordion-primary-button-active-color); //accordion button active color
+$accordion-secondary-button-text-color: var(--accordion-secondary-button-text-color); //accordion secondary text color
+$accordion-secondary-button-background-color: var(--accordion-secondary-button-background-color); //accordion secondary background color
+$accordion-secondary-button-border-color: var(--accordion-secondary-button-border-color); //accordion secondary border color
+$accordion-secondary-button-active-color: var(--accordion-secondary-button-active-color); //accordion secondary active color
+
+// Footer
+$footer-background-color: var(--footer-background-color); //footer background color
+$footer-text-color: var(--footer-text-color); //footer text color
+$footer-link-color: var(--footer-link-color); //footer link color
+$footer-link-hover-color: var(--footer-link-hover-color); //footer link hover color
+$footer-border-color: var(--footer-border-color); //footer border color
+$footer-button-color: var(--footer-button-color); //footer button color
+$footer-button-hover-color: var(--footer-button-hover-color); //footer button hover color
+$footer-text-size: var(--footer-text-size); //footer text size
+$footer-link-size: var(--footer-link-size); //footer link size
+
+//Header Colors
+$background-color-header: var(--background-color-header); //background color header
+$background-color-navigation: var(--background-color-navigation); //background color navigation
+$border-color-navigation: var(--border-color-navigation); //border color navigation
+$text-navigation-link-size: var(--text-navigation-link-size); //text link size
+$text-color-navigation-link: var(--text-color-navigation-link); //text color navigation link
+$text-color-navigation-link-hover: var(--text-color-navigation-link-hover); //text color navigation link hover
+$text-color-navigation-link-active: var(--text-color-navigation-link-active); //text color navigation link active
+$background-color-navigation-link: var(--background-color-navigation-link-active-hover); //background color navigation link active hover
+$background-color-navigation-link-hover: var(--background-color-navigation-link-hover); //background color navigation link hover
+$background-color-navigation-link-active: var(--background-color-navigation-link-active); //background color navigation link active
+$background-color-navigation-link-active-hover: var(--background-color-navigation-link-active-hover); //background color navigation link active hover
+$background-color-submenu: var(--background-color-submenu); //background color submenu
+$text-color-submenu: var(--text-color-submenu); //text color submenu
+$text-color-submenu-hover: var(--text-color-submenu-hover); //text color submenu hover
+$text-color-submenu-active: var(--text-color-submenu-active); //text color submenu active
+$text-color-submenu-active-hover: var(--text-color-submenu-active-hover); //text color submenu active hover
+$search-icon-text-color: var(--search-icon-text-color); //search icon text color
+$search-modal-background-color: var(--search-modal-background-color); //search background color
+$search-modal-text-color: var(--search-modal-text-color); //search text color
+$search-modal-border-color: var(--search-modal-border-color); //search border color
+$search-modal-close-color: var(--search-modal-close-color); //search close color
+$language-navigation-text-color: var(--language-navigation-text-color); //language navigation text color
+
+//hero
+$hero-background-color: var(--hero-background-color); //hero background color
+$hero-background-color-mobile: var(--hero-background-color-mobile); //hero background color
+$hero-background-color-no-image: var(--hero-background-color-no-image); //hero background color
+$hero-text-color: var(--hero-text-color); //hero text color
+$hero-button-color: var(--hero-button-color); //hero button color
+$hero-button-hover-color: var(--hero-button-hover-color); //hero button hover color
+
+// Carousel
+$carousel-background-color: var(--carousel-background-color); //carousel background color
+$carousel-text-color: var(--carousel-text-color); //carousel text color
+$carousel-button-color: var(--carousel-button-color); //carousel button color
+$carousel-button-hover-color: var(--carousel-button-hover-color); //carousel button hover color
+$carousel-background-color-blue: var(--carousel-background-color-blue); //carousel background color
+$carousel-text-color-blue: var(--carousel-text-color-blue); //carousel text color
+$carousel-button-color-blue: var(--carousel-button-color-blue); //carousel button color
+$carousel-button-hover-color-blue: var(--carousel-button-hover-color-blue); //carousel button hover color
+
+//form
+$form-text-color: var(--form-text-color); //form text color
+$form-text-border-color: var(--form-text-border-color); //form text border color
+$form-text-background-color: var(--form-text-background-color); //form text background color
+$form-text-placeholder-color: var(--form-text-placeholder-color); //form text placeholder color
+$form-text-focus-color: var(--form-text-focus-color); //form text focus color
+$form-text-hover-color: var(--form-text-hover-color); //form text hover color
+
+//login
+$modal-background-color: var(--modal-background-color); //modal background color
+$modal-text-color: var(--modal-text-color); //modal text color
+$modal-button-color: var(--modal-button-color); //modal button color
+$modal-close-color: var(--modal-close-color); //modal close color
+$modal-border-color: var(--modal-border-color); //modal border color
