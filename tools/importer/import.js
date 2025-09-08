@@ -23,8 +23,7 @@ const KNOWN_TAGS = [
 const CLASS_HINTS = {
   teaser: [
     'teaser', 'cmp-teaser', 'hero-teaser', 'promo',
-    'tile', 'teaser-title', 'lead', 'card--teaser',
-    'hero', 'description', 'teaser-description', 'button',
+    'tile', 'lead', 'card--teaser',
   ],
 };
 
