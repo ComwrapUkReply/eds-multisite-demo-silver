@@ -27,4 +27,33 @@
 
     /* nav height */
     --nav-height: 64px;
+
+    /* Header colors */
+    --background-color-header: red;
+    --text-navigation-link-size: 18px;
+    --text-color-navigation-link: #0063BE;
+    --text-color-navigation-link-hover: #000;
+    --text-color-navigation-link-active: #000;
+    --background-color-navigation-link-active-hover: #000;
+    --background-color-navigation-link-hover: #000;
+    --background-color-navigation-link-active: #fff;
+    --background-color-submenu: #fff;
+    --text-color-submenu: #000;
+    --text-color-submenu-hover: #000;
+    --text-color-submenu-active: #000;
+    --text-color-submenu-active-hover: #000;
+    --search-icon-text-color: #0063BE;
+    --search-modal-background-color: #0063BE;
+    --search-modal-text-color: #fff;
+    --search-modal-close-color: #fff;
+    --search-modal-border-color: #fff;
+    --language-navigation-text-color: #000;
+
+    /* hero colors */
+    --hero-background-color: linear-gradient(200deg,#0c2863, gold); 
+    --hero-background-color-mobile: #0004ee;
+    --hero-background-color-no-image: #0004ee;
+    --hero-text-color: #fff;
+    --hero-button-color: #fff;
+    --hero-button-hover-color: #fff;
 }

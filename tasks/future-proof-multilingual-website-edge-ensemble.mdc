@@ -1,0 +1,102 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Bonjour! Hola! Hello! – Creating Multilingual Sites with Ease
+For businesses looking to reach a broad audience or customer base, multilingual support is often an essential requirement. The dominant approach is often to create separate content and pathing for each region and language. On larger sites, however, this inevitably leads to an explosion of duplicated content, impacting SEO, user accessibility, and the effort needed by authors to manage and update content. Within this blog post, we’ll be looking at how Edge Delivery Services seeks to address these issues by minimizing the need for duplicate content using a combination of placeholders, indexes, sitemaps, and recommended content structuring practices.
+
+Considering Languages & Regions in Content Structure
+Before diving into how to best handle multilingual support, it’s important to consider that apart from differences in language, more sales-oriented sites often may have the added requirement of needing to support different markets/regions as well. The traditional approach is often to create a separate folder for each combination of region and language, leading to pathing like:
+
+https://<domain>/en-us/
+https://<domain>/en-ca/
+https://<domain>/fr-ca/
+
+However, as discussed, our goal here is to reduce duplicate content. In the example above if Canada and the U.S. both contain the same English pages, then it makes little sense to host these under both paths. This often can alienate some users as well who may want to consume content in a language unsupported by that region ... say a French speaker in the U.S. region. Of course in cases where there is little overlap in content across regions or where each has different branding requirements this approach may still be best.
+
+Where possible though we want to operate with a “language first” approach:
+
+https://<domain>/en/us
+https://<domain>/en/ca
+https://<domain>/fr/ca
+This ensures that only content that is regional needs be created separately. Referring again to our example above, if both the Canadian and U.S. versions of our site share the same “about-us” page then it makes sense to just have this live under:
+
+https://<domain>/en/about-us
+
+Similarly, it follows that the French version of this page can now be made available to all users regardless of region:
+
+https://<domain>/fr/about-us
+
+By using this approach we’ve removed the need to duplicate this page across both English regions while still allowing ourselves the option to create region-specific content. If our Canadian and U.S. regions sell different products for example, we can add that additional specificity to the URL for each and place these pages within regional sub-folders:
+
+https://<domain>/en/us/products
+https://<domain>/en/ca/products
+Link Rewriting
+The unfortunate complication of this new URL structure is that we can’t rely on non-regional pages to link out to the correct regional ones. We'll need to instead leverage sessionStorage, localStorage, or cookies to track a user's region and set up a query index within each language folder and regional subfolder. For every link on a page, we search our user's captured region’s index to see if the links’ relative path exists there and update the link accordingly if it does. If it does not, we instead search through the language index and use the link there if it exists. Continuing with our example, if a U.S. user was to navigate to the “products” page from a non-regional page we would first look through:
+
+https://<domain>/en/us/query-index.json
+Seeing that the links’ relative path is contained within the index (and therefore a regional page) we would then alter the link to point to:
+
+https://<domain>/en/us/products
+If the regional content had not been found, we would have continued our search looking through:
+
+https://<domain>/en/query-index.json
+
+And likely linking to:
+
+https://<domain>/en/products
+
+Leveraging Placeholders for Translations in Code
+For multilingual sites we obviously do not want to hard code any language specific strings, particularly on our blocks which are shared across all pages regardless of language. By taking advantage of Edge Delivery Service’s built in placeholders functionality and taking design cues from the previous section we can instead dynamically fetch the properly translated string value based on the pages' location, metadata, or the user’s selected language. Much like with our indexes we create a placeholders spreadsheet within each language folder and populate each with the same keys and their respective translated values. From our code we can now use the “fetchPlaceholders” function and dynamically pass in our captured language value like so:
+
+const placeholders = await fetchPlaceholders('fr');
+const placeholders = await fetchPlaceholders('en');
+As an example, let’s look at a basic countdown block which contains the following HTML:
+
+<p class='unit'>${placeholders.days}</p>
+<p class='unit'>${placeholders.hours}</p>
+<p class='unit'>${placeholders.minutes}</p>
+And the related snippets from the placeholder spreadsheets for each language folder:
+
+/en/placeholders.xlsx
+
+
+
+
+
+/fr/placeholders.xlsx
+
+
+
+
+
+As you can see by leveraging placeholders we’ve removed any language specific strings from our block code and instead reference shared keys, thereby ensuring we can use the same block anywhere on our site.
+
+Without going into too much detail, you can imagine how this same concept could be applied to our regional folders to alter our code's behavior using placeholders across regions as well.
+
+Content/Document Translation
+Of course, having now covered how to handle translations within our code this brings up the question of how best to translate the content itself. Because Edge Delivery Services with document-based editing typically involves using Word, Google Docs, and spreadsheets, we have built in machine translation already available to us right out of the box. In addition, we can assume that nearly all third-party translation services will be able to seamlessly integrate with our choice of editor and content repository. This flexibility in tooling allows us to automate our translation process exactly how we’d like to, allowing for quick content creation within our language subfolders and in turn, across all our sites.
+
+Improving SEO with Sitemaps
+Now that we have set up our language specific folders, placeholders files, and query indexes we can now set up our sitemaps in an SEO friendly way. It is common to have sitemaps for each language, Edge Delivery Services supports multiple sitemaps and allows you to set their corresponding hreflang references. Following our example above we should now have both French and English language subfolders, each containing their own query index. In the root folder of our project we can create a file called “helix-sitemap.yaml” and populate it with the following:
+
+sitemaps:
+  example:
+    lastmod: YYYY-MM-DD
+    languages:
+      en:
+        source: /en/query-index.json
+        destination: /sitemap-en.xml
+        hreflang: en
+      fr:
+        source: /fr/query-index.json
+        destination: /sitemap-fr.xml
+        hreflang: fr
+        alternate: /fr/{path}
+This will generate a sitemap for each of our language subfolders based on the indexes we set up within each.
+
+Alternative Configurations
+This post only captures the setup of a standard multilingual site. There may be cases where your region/language requirements are entirely different or where your site typically caters to a specific audience, in which case that audience's language would be best placed at the root of the project with alternative languages being contained within subfolders.
+
+For additional information please consult related AEM documentation covering translations, placeholders, and the query index.
