@@ -42,14 +42,11 @@
           "description": "The styles of the columns",
           "valueType": "string",
           "options": [
-            {
-              "name": "Teaser",
-              "value": ""
-            },
-            {
-              "name": "Card",
-              "value": "card-teaser"
-            }
+            {"name": "Default", "value": ""},
+            {"name": "Card Style", "value": "card"},
+            {"name": "Bordered", "value": "bordered"},
+            {"name": "Highlighted", "value": "highlighted"},
+            {"name": "Minimal", "value": "minimal"}
           ]
         }
       ]

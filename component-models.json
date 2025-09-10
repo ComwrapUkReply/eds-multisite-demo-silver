@@ -211,12 +211,24 @@
         "valueType": "string",
         "options": [
           {
-            "name": "Teaser",
+            "name": "Default",
             "value": ""
           },
           {
-            "name": "Card",
-            "value": "card-teaser"
+            "name": "Card Style",
+            "value": "card"
+          },
+          {
+            "name": "Bordered",
+            "value": "bordered"
+          },
+          {
+            "name": "Highlighted",
+            "value": "highlighted"
+          },
+          {
+            "name": "Minimal",
+            "value": "minimal"
           }
         ]
       }
