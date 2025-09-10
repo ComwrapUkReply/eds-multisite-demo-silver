@@ -204,8 +204,10 @@
       },
       {
         "component": "select",
-        "name": "variant",
-        "label": "Style Variant",
+        "name": "classes",
+        "value": "",
+        "label": "Styles",
+        "description": "The styles of the columns",
         "valueType": "string",
         "options": [
           {
