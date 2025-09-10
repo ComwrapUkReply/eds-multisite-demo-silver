@@ -53,7 +53,9 @@
         "fragment",
         "language-switcher",
         "quote",
-        "teaser"
+        "teaser",
+        "breadcrumbs",
+        "quote"
       ]
     }
   ]

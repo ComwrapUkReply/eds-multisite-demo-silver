@@ -57,4 +57,7 @@
     --hero-text-color: #fff;
     --hero-button-color: #fff;
     --hero-button-hover-color: #fff;
+
+    /* card colors */
+    --card-background-color: gold;
 }

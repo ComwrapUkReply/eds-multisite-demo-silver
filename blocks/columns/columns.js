@@ -15,4 +15,29 @@ export default function decorate(block) {
       }
     });
   });
+
+  // Handle image-text-split variant specific styling
+  if (block.classList.contains('variant-image-text-split')) {
+    const firstCol = block.querySelector('div > div:first-child');
+    const secondCol = block.querySelector('div > div:last-child');
+    
+    if (firstCol && secondCol) {
+      // Ensure first column is treated as image column
+      const pic = firstCol.querySelector('picture');
+      if (pic) {
+        firstCol.classList.add('columns-img-col');
+      }
+      
+      // Add specific classes for text content styling
+      const heading = secondCol.querySelector('h1, h2, h3, h4, h5, h6');
+      if (heading) {
+        heading.classList.add('image-text-split-heading');
+      }
+      
+      const paragraph = secondCol.querySelector('p');
+      if (paragraph) {
+        paragraph.classList.add('image-text-split-text');
+      }
+    }
+  }
 }

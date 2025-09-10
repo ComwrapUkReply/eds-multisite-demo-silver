@@ -20,39 +20,10 @@ const KNOWN_TAGS = [
   'input', 'ol', 'li', 'ul', 'summary', 'details',
 ];
 
-// Enhanced class hints for all block types
 const CLASS_HINTS = {
   teaser: [
     'teaser', 'cmp-teaser', 'hero-teaser', 'promo',
-    'tile', 'lead', 'card--teaser', 'content-card',
-  ],
-  hero: [
-    'hero', 'banner', 'jumbotron', 'hero-section',
-    'main-banner', 'hero-banner', 'landing-hero',
-  ],
-  quote: [
-    'quote', 'testimonial', 'blockquote', 'citation',
-    'quote-block', 'testimonial-block', 'pullquote',
-  ],
-  cards: [
-    'cards', 'card-grid', 'card-container', 'grid',
-    'card-list', 'feature-cards', 'product-cards',
-  ],
-  card: [
-    'card', 'card-item', 'grid-item', 'feature-card',
-    'product-card', 'content-card', 'tile',
-  ],
-  columns: [
-    'columns', 'column-layout', 'multi-column', 'grid-layout',
-    'two-column', 'three-column', 'layout-grid',
-  ],
-  fragment: [
-    'fragment', 'include', 'reference', 'embed',
-    'content-fragment', 'fragment-block',
-  ],
-  'language-switcher': [
-    'language-switcher', 'lang-switcher', 'locale-switcher',
-    'language-selector', 'multilingual', 'i18n-switcher',
+    'tile', 'lead', 'card--teaser',
   ],
 };
 
@@ -80,6 +51,15 @@ function firstImg(kids) {
   if (!kids) return undefined;
   for (const k of kids) if (k?.type === 'img') return k;
   return undefined;
+}
+
+function hasHeading(kids) {
+  if (!kids) return false;
+  for (const k of kids) {
+    const tag = (k.tag || '').toLowerCase();
+    if (k.type === 'text' && (tag === 'h1' || tag === 'h2' || tag === 'h3')) return true;
+  }
+  return false;
 }
 
 function firstHeading(kids) {
@@ -187,541 +167,228 @@ async function loadAndApplyCSS(urls, documentRef) {
 }
 
 /* ---------------------------
-   Block pattern detection
----------------------------- */
-
-/**
- * Detects if a node matches the Hero block pattern
- * Hero blocks typically have: background image + text content, or large heading + description
- */
-function possibleHero(node) {
-  if (!node?.children || node.children.length < 1) return false;
-
-  const kids = flattenTexts(node.children);
-  const img = firstImg(kids) || (node.backgroundImage ? { type: 'img', link: node.backgroundImage } : null);
-  const heading = firstHeading(kids);
-  const hasDesc = allParas(kids).length > 0;
-  const hasClassHint = hasAnyClass(node, CLASS_HINTS.hero);
-
-  // Pattern 1: Large background image with text overlay
-  const hasBackgroundImageAndContent = node.backgroundImage && (heading || hasDesc);
-
-  // Pattern 2: Large heading with description (typical hero pattern)
-  const hasLargeHeading = heading && (heading.tag === 'h1' || heading.tag === 'h2') && hasDesc;
-
-  // Pattern 3: Image + large heading
-  const hasImageAndHeading = img && heading && (heading.tag === 'h1' || heading.tag === 'h2');
-
-  // Pattern 4: CSS class hint
-  const hasHeroClass = hasClassHint;
-
-  return Boolean(hasBackgroundImageAndContent || hasLargeHeading || hasImageAndHeading || hasHeroClass);
-}
-
-/**
- * Detects if a node matches the Quote block pattern
- * Quote blocks typically have: quoted text + author attribution
- */
-function possibleQuote(node) {
-  if (!node?.children || node.children.length < 1) return false;
-
-  const kids = flattenTexts(node.children);
-  const hasClassHint = hasAnyClass(node, CLASS_HINTS.quote);
-
-  // Look for blockquote elements or text that looks like a quote
-  const hasBlockquote = kids.some((k) => k.tag === 'blockquote');
-  const hasQuoteText = kids.some((k) => (
-    k.type === 'text'
-    && (k.text?.includes('"') || k.text?.includes('"') || k.text?.includes("'") || k.text?.includes("'"))
-  ));
-
-  // Pattern 1: Blockquote element
-  const hasBlockquotePattern = hasBlockquote;
-
-  // Pattern 2: Text with quotes + potential author
-  const hasQuotePattern = hasQuoteText && kids.length >= 2;
-
-  // Pattern 3: CSS class hint
-  const hasQuoteClass = hasClassHint;
-
-  return Boolean(hasBlockquotePattern || hasQuotePattern || hasQuoteClass);
-}
-
-/**
- * Detects if a node matches the Cards container pattern
- * Cards containers typically have multiple similar child elements
- */
-function possibleCards(node) {
-  if (!node?.children || node.children.length < 2) return false;
-
-  const hasClassHint = hasAnyClass(node, CLASS_HINTS.cards);
-
-  // Look for multiple similar child elements that could be cards
-  const hasMultipleSimilarChildren = node.children.length >= 2;
-
-  // Check if children have similar structure (image + text patterns)
-  const childrenWithImages = node.children.filter((child) => {
-    const childKids = flattenTexts(child.children || []);
-    return firstImg(childKids) || child.backgroundImage;
-  });
-
-  const hasMultipleCards = childrenWithImages.length >= 2;
-
-  return Boolean(hasClassHint || (hasMultipleSimilarChildren && hasMultipleCards));
-}
-
-/**
- * Detects if a node matches the Columns pattern
- * Columns typically have multiple child elements arranged horizontally
- */
-function possibleColumns(node) {
-  if (!node?.children || node.children.length < 2) return false;
-
-  const hasClassHint = hasAnyClass(node, CLASS_HINTS.columns);
-
-  // Look for multiple child elements that could be columns
-  const hasMultipleChildren = node.children.length >= 2;
-
-  // Check if children have similar structure
-  const hasSimilarChildren = node.children.every((child) => (
-    child.children && child.children.length > 0
-  ));
-
-  return Boolean(hasClassHint || (hasMultipleChildren && hasSimilarChildren));
-}
-
-/**
- * Detects if a node matches the Fragment pattern
- * Fragments typically reference external content
- */
-function possibleFragment(node) {
-  if (!node?.children || node.children.length < 1) return false;
-
-  const kids = flattenTexts(node.children);
-  const hasClassHint = hasAnyClass(node, CLASS_HINTS.fragment);
-
-  // Look for iframe elements or content that suggests external reference
-  const hasIframe = kids.some((k) => k.type === 'iframe');
-  const hasExternalContent = kids.some((k) => (
-    k.type === 'link' && k.link && !k.link.startsWith('#')
-  ));
-
-  return Boolean(hasClassHint || hasIframe || hasExternalContent);
-}
-
-/**
- * Detects if a node matches the Language Switcher pattern
- * Language switchers typically have dropdown or link elements for language selection
- */
-function possibleLanguageSwitcher(node) {
-  if (!node?.children || node.children.length < 1) return false;
-
-  const kids = flattenTexts(node.children);
-  const hasClassHint = hasAnyClass(node, CLASS_HINTS['language-switcher']);
-
-  // Look for language-related content
-  const hasLanguageLinks = kids.some((k) => (
-    k.type === 'link'
-    && (k.text?.toLowerCase().includes('language')
-      || k.text?.toLowerCase().includes('lang')
-      || k.link?.includes('lang=')
-      || k.link?.includes('locale='))
-  ));
-
-  const hasSelectElement = kids.some((k) => k.type === 'select');
-  const hasLanguageText = kids.some((k) => (
-    k.type === 'text'
-    && (k.text?.toLowerCase().includes('language')
-      || k.text?.toLowerCase().includes('select language'))
-  ));
-
-  return Boolean(hasClassHint || hasLanguageLinks || hasSelectElement || hasLanguageText);
-}
-
-/* ---------------------------
-   Block HTML builders
----------------------------- */
-
-function createHeroBlockHtml(main, node, fromParent) {
-  const kids = flattenTexts(node.children || []);
-  const imgNode = firstImg(kids) || (node.backgroundImage
-    ? { type: 'img', link: node.backgroundImage }
-    : null);
-  const h = firstHeading(kids);
-  const descs = allParas(kids);
-
-  const cells = [['Hero']];
-
-  // Image
-  if (imgNode) {
-    const imgCell = document.createElement('div');
-    const img = document.createElement('img');
-    img.src = imgNode.link;
-    img.alt = imgNode.alt || '';
-    img.setAttribute('data-aue-prop', 'image');
-    img.setAttribute('data-aue-type', 'reference');
-    imgCell.appendChild(img);
-    cells.push([imgCell]);
-  }
-
-  // Image Alt
-  if (imgNode?.alt) {
-    const altCell = document.createElement('div');
-    altCell.textContent = imgNode.alt;
-    altCell.setAttribute('data-aue-prop', 'imageAlt');
-    altCell.setAttribute('data-aue-type', 'text');
-    cells.push([altCell]);
-  }
-
-  // Text content
-  if (h || descs.length > 0) {
-    const textCell = document.createElement('div');
-    const textWrapper = document.createElement('div');
-    textWrapper.setAttribute('data-aue-prop', 'text');
-    textWrapper.setAttribute('data-aue-type', 'richtext');
-
-    if (h) {
-      const hEl = document.createElement(h.tag || 'h1');
-      hEl.innerHTML = (h.text || '').replace(/<br\s*\/?>/gi, ' ');
-      textWrapper.appendChild(hEl);
-    }
-
-    for (const p of descs) {
-      const pEl = document.createElement('p');
-      pEl.innerHTML = (p.text || '').replace(/<br\s*\/?>/gi, ' ');
-      textWrapper.appendChild(pEl);
-    }
-
-    textCell.appendChild(textWrapper);
-    cells.push([textCell]);
-  }
-
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  if (!fromParent) main.appendChild(table);
-  node.htmlModule = table;
-}
-
-function createQuoteBlockHtml(main, node, fromParent) {
-  const kids = flattenTexts(node.children || []);
-  const quoteText = kids.find((k) => k.tag === 'blockquote') || kids[0];
-  const authorText = kids.find((k) => (
-    k.type === 'text'
-    && (k.text?.includes('—') || k.text?.includes('-') || k.text?.includes('by'))
-  )) || kids[kids.length - 1];
-
-  const cells = [['Quote']];
-
-  // Quote text
-  if (quoteText) {
-    const quoteCell = document.createElement('div');
-    const quoteWrapper = document.createElement('div');
-    quoteWrapper.setAttribute('data-aue-prop', 'quote');
-    quoteWrapper.setAttribute('data-aue-type', 'richtext');
-
-    const quoteEl = document.createElement('blockquote');
-    quoteEl.innerHTML = (quoteText.text || '').replace(/<br\s*\/?>/gi, ' ');
-    quoteWrapper.appendChild(quoteEl);
-    quoteCell.appendChild(quoteWrapper);
-    cells.push([quoteCell]);
-  }
-
-  // Author
-  if (authorText && authorText !== quoteText) {
-    const authorCell = document.createElement('div');
-    authorCell.textContent = authorText.text || '';
-    authorCell.setAttribute('data-aue-prop', 'author');
-    authorCell.setAttribute('data-aue-type', 'text');
-    cells.push([authorCell]);
-  }
-
-  // Classes (default)
-  const classesCell = document.createElement('div');
-  classesCell.textContent = '';
-  classesCell.setAttribute('data-aue-prop', 'classes');
-  classesCell.setAttribute('data-aue-type', 'select');
-  cells.push([classesCell]);
-
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  if (!fromParent) main.appendChild(table);
-  node.htmlModule = table;
-}
-
-function createCardsBlockHtml(main, node, fromParent) {
-  const cells = [['Cards']];
-
-  // Process each child as a card
-  for (const child of node.children) {
-    const childKids = flattenTexts(child.children || []);
-    const imgNode = firstImg(childKids) || (child.backgroundImage
-      ? { type: 'img', link: child.backgroundImage }
-      : null);
-    const textContent = childKids.find((k) => k.type === 'text');
-
-    if (imgNode || textContent) {
-      const cardCell = document.createElement('div');
-      cardCell.setAttribute('data-aue-prop', 'card');
-      cardCell.setAttribute('data-aue-type', 'block');
-
-      // Image
-      if (imgNode) {
-        const img = document.createElement('img');
-        img.src = imgNode.link;
-        img.alt = imgNode.alt || '';
-        img.setAttribute('data-aue-prop', 'image');
-        img.setAttribute('data-aue-type', 'reference');
-        cardCell.appendChild(img);
-      }
-
-      // Text
-      if (textContent) {
-        const textDiv = document.createElement('div');
-        textDiv.innerHTML = textContent.text || '';
-        textDiv.setAttribute('data-aue-prop', 'text');
-        textDiv.setAttribute('data-aue-type', 'richtext');
-        cardCell.appendChild(textDiv);
-      }
-
-      cells.push([cardCell]);
-    }
-  }
-
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  if (!fromParent) main.appendChild(table);
-  node.htmlModule = table;
-}
-
-function createColumnsBlockHtml(main, node, fromParent) {
-  const cells = [['Columns']];
-
-  // Columns count
-  const columnsCell = document.createElement('div');
-  columnsCell.textContent = node.children.length.toString();
-  columnsCell.setAttribute('data-aue-prop', 'columns');
-  columnsCell.setAttribute('data-aue-type', 'number');
-  cells.push([columnsCell]);
-
-  // Rows count (default to 1)
-  const rowsCell = document.createElement('div');
-  rowsCell.textContent = '1';
-  rowsCell.setAttribute('data-aue-prop', 'rows');
-  rowsCell.setAttribute('data-aue-type', 'number');
-  cells.push([rowsCell]);
-
-  // Column content
-  for (const child of node.children) {
-    const columnCell = document.createElement('div');
-    columnCell.setAttribute('data-aue-prop', 'column');
-    columnCell.setAttribute('data-aue-type', 'block');
-    columnCell.innerHTML = child.innerHTML || '';
-    cells.push([columnCell]);
-  }
-
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  if (!fromParent) main.appendChild(table);
-  node.htmlModule = table;
-}
-
-function createFragmentBlockHtml(main, node, fromParent) {
-  const kids = flattenTexts(node.children || []);
-  const linkNode = firstCta(kids) || kids.find((k) => k.type === 'link');
-
-  const cells = [['Fragment']];
-
-  // Reference
-  const refCell = document.createElement('div');
-  if (linkNode) {
-    const link = document.createElement('a');
-    link.href = linkNode.link || '#';
-    link.textContent = linkNode.text || 'Reference';
-    refCell.appendChild(link);
-  } else {
-    refCell.textContent = 'Reference';
-  }
-  refCell.setAttribute('data-aue-prop', 'reference');
-  refCell.setAttribute('data-aue-type', 'aem-content');
-  cells.push([refCell]);
-
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  if (!fromParent) main.appendChild(table);
-  node.htmlModule = table;
-}
-
-function createLanguageSwitcherBlockHtml(main, node, fromParent) {
-  const cells = [['Language Switcher']];
-
-  // Title
-  const titleCell = document.createElement('div');
-  titleCell.textContent = 'Language Switcher';
-  titleCell.setAttribute('data-aue-prop', 'title');
-  titleCell.setAttribute('data-aue-type', 'text');
-  cells.push([titleCell]);
-
-  // Show Country Flags
-  const flagsCell = document.createElement('div');
-  flagsCell.textContent = 'true';
-  flagsCell.setAttribute('data-aue-prop', 'showCountryFlags');
-  flagsCell.setAttribute('data-aue-type', 'boolean');
-  cells.push([flagsCell]);
-
-  // Group by Country
-  const groupCell = document.createElement('div');
-  groupCell.textContent = 'true';
-  groupCell.setAttribute('data-aue-prop', 'groupByCountry');
-  groupCell.setAttribute('data-aue-type', 'boolean');
-  cells.push([groupCell]);
-
-  // Supported Locales
-  const localesCell = document.createElement('div');
-  localesCell.textContent = 'en-uk,de-ch,fr-ch';
-  localesCell.setAttribute('data-aue-prop', 'supportedLocales');
-  localesCell.setAttribute('data-aue-type', 'multiselect');
-  cells.push([localesCell]);
-
-  // Fallback Locale
-  const fallbackCell = document.createElement('div');
-  fallbackCell.textContent = 'en-uk';
-  fallbackCell.setAttribute('data-aue-prop', 'fallbackLocale');
-  fallbackCell.setAttribute('data-aue-type', 'select');
-  cells.push([fallbackCell]);
-
-  // Preserve Path
-  const preserveCell = document.createElement('div');
-  preserveCell.textContent = 'true';
-  preserveCell.setAttribute('data-aue-prop', 'preservePath');
-  preserveCell.setAttribute('data-aue-type', 'boolean');
-  cells.push([preserveCell]);
-
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  if (!fromParent) main.appendChild(table);
-  node.htmlModule = table;
-}
-
-// Keep the existing teaser function
-function createTeaserBlockHtml(main, node, fromParent) {
-  const kids = flattenTexts(node.children || []);
-  const imgNode = firstImg(kids) || (node.backgroundImage
-    ? { type: 'img', link: node.backgroundImage }
-    : null);
-  const h = firstHeading(kids);
-  const descs = allParas(kids);
-  const ctaNode = firstCta(kids);
-
-  const cells = [['Teaser']];
-
-  // Image
-  if (imgNode) {
-    const imgCell = document.createElement('div');
-    const img = document.createElement('img');
-    img.src = imgNode.link;
-    img.alt = imgNode.alt || '';
-    img.setAttribute('data-aue-prop', 'image');
-    img.setAttribute('data-aue-type', 'reference');
-    imgCell.appendChild(img);
-    cells.push([imgCell]);
-  }
-
-  // Image Alt
-  if (imgNode?.alt) {
-    const altCell = document.createElement('div');
-    altCell.textContent = imgNode.alt;
-    altCell.setAttribute('data-aue-prop', 'imageAlt');
-    altCell.setAttribute('data-aue-type', 'text');
-    cells.push([altCell]);
-  }
-
-  // Title
-  if (h) {
-    const titleCell = document.createElement('div');
-    const hEl = document.createElement(h.tag || 'h2');
-    hEl.innerHTML = (h.text || '').replace(/<br\s*\/?>/gi, ' ');
-    hEl.setAttribute('data-aue-prop', 'title');
-    hEl.setAttribute('data-aue-type', 'richtext');
-    titleCell.appendChild(hEl);
-    cells.push([titleCell]);
-  }
-
-  // Description
-  if (descs.length > 0) {
-    const descCell = document.createElement('div');
-    const descWrapper = document.createElement('div');
-    descWrapper.setAttribute('data-aue-prop', 'description');
-    descWrapper.setAttribute('data-aue-type', 'richtext');
-
-    for (const p of descs) {
-      const pEl = document.createElement('p');
-      pEl.innerHTML = (p.text || '').replace(/<br\s*\/?>/gi, ' ');
-      descWrapper.appendChild(pEl);
-    }
-    descCell.appendChild(descWrapper);
-    cells.push([descCell]);
-  }
-
-  // Link
-  if (ctaNode) {
-    const linkCell = document.createElement('div');
-    const linkWrapper = document.createElement('div');
-    linkWrapper.setAttribute('data-aue-prop', 'link');
-    linkWrapper.setAttribute('data-aue-type', 'aem-content');
-
-    const a = document.createElement('a');
-    a.href = ctaNode.link || '#';
-    a.textContent = (ctaNode.text || '').trim() || 'Learn More';
-    linkWrapper.appendChild(a);
-    linkCell.appendChild(linkWrapper);
-    cells.push([linkCell]);
-  }
-
-  // Link Text
-  if (ctaNode) {
-    const linkTextCell = document.createElement('div');
-    linkTextCell.textContent = (ctaNode.text || '').trim() || 'Learn More';
-    linkTextCell.setAttribute('data-aue-prop', 'linkText');
-    linkTextCell.setAttribute('data-aue-type', 'text');
-    cells.push([linkTextCell]);
-  }
-
-  // Variant
-  const variantCell = document.createElement('div');
-  variantCell.textContent = 'default';
-  variantCell.setAttribute('data-aue-prop', 'variant');
-  variantCell.setAttribute('data-aue-type', 'select');
-  cells.push([variantCell]);
-
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  if (!fromParent) main.appendChild(table);
-  node.htmlModule = table;
-}
-
-/* ---------------------------
-   Enhanced block detection
+   Teaser pattern detection
 ---------------------------- */
 
 function possibleTeaser(node) {
+  // Check if the node exists and has at least one child element
   if (!node?.children || node.children.length < 1) return false;
 
+  // Flatten the node's children to get a simplified structure for analysis
   const kids = flattenTexts(node.children);
+
+  // Look for an image in the children, or use background image if available
   const img = firstImg(kids) || (node.backgroundImage ? { type: 'img', link: node.backgroundImage } : null);
+
+  // Find the first heading element in the children
   const heading = firstHeading(kids);
+
+  // Find the first call-to-action (CTA) element in the children
   const cta = firstCta(kids);
+
+  // Check if there are any paragraph elements (descriptions) present
   const hasDesc = allParas(kids).length > 0;
+
+  // Enhanced detection for teaser patterns
+  // Pattern 1: Has an image AND either a heading or description
+  const hasImageAndContent = img && (heading || hasDesc);
+
+  // Pattern 2: Has both a heading and a call-to-action
+  const hasHeadingAndCTA = heading && cta;
+
+  // Pattern 3: Has CSS classes that hint this is a teaser component
   const hasClassHint = hasAnyClass(node, CLASS_HINTS.teaser);
 
-  const hasImageAndContent = img && (heading || hasDesc);
-  const hasHeadingAndCTA = heading && cta;
+  // Pattern 4: Has a background image AND either a heading or description
   const hasBackgroundImage = node.backgroundImage && (heading || hasDesc);
+
+  // Single content item that could be a teaser
+  // Pattern 5: Only one child element but contains heading or description content
   const isSingleContent = node.children.length === 1 && (heading || hasDesc);
+
+  // Pattern 6: All children are image, img alt, title, description
   const isTeaserImageTitleDescription = node.children.length === 1 && img && heading && hasDesc;
+
+  // Pattern 7: All children are image, title, description, CTA button
   const isTeaserImageTitleDescriptionCTA = node.children.length === 1 && img && img.alt && heading && hasDesc && cta;
 
+  // Return true if any of the teaser patterns are detected
   return Boolean(
     hasImageAndContent || hasHeadingAndCTA || hasClassHint || hasBackgroundImage || isSingleContent || isTeaserImageTitleDescription || isTeaserImageTitleDescriptionCTA,
   );
 }
 
 /* ---------------------------
+   Teaser block table builder
+---------------------------- */
+
+function createTableBlock(name, rows, documentRef) {
+  // Create a 2D array for table cells, starting with the block name as the header
+  const cells = [[name]];
+  // Add each row from the rows parameter to the cells array
+  for (const r of rows) cells.push(r);
+  // Use WebImporter utility to create an HTML table from the cells array
+  return WebImporter.DOMUtils.createTable(cells, documentRef);
+}
+
+function createTeaserBlockHtml(main, node, fromParent) {
+  // Extract and flatten text content from the node's children for easier processing
+  const kids = flattenTexts(node.children || []);
+  
+  // Find the first image in children, or create an image object from background image if present
+  const imgNode = firstImg(kids) || (node.backgroundImage
+    ? { type: 'img', link: node.backgroundImage }
+    : null);
+  
+  // Extract the first heading element from the flattened children
+  const h = firstHeading(kids);
+  
+  // Extract all paragraph elements (descriptions) from the flattened children
+  const descs = allParas(kids);
+  
+  // Extract the first call-to-action (CTA) element from the flattened children
+  const ctaNode = firstCta(kids);
+
+  // Create teaser table with proper structure for Universal Editor
+  // Start with the block name 'Teaser' as the first row
+  const cells = [['Teaser']];
+
+  // Create image cell
+  if (imgNode) {
+    // Create a container div for the image
+    const imgCell = document.createElement('div');
+    // Create the actual img element
+    const img = document.createElement('img');
+    img.src = imgNode.link;
+    img.alt = imgNode.alt || '';
+    // Add Universal Editor attributes for image property
+    img.setAttribute('data-aue-prop', 'image');
+    img.setAttribute('data-aue-type', 'reference');
+    imgCell.appendChild(img);
+    // Add the image cell as a new row in the table
+    cells.push([imgCell]);
+  }
+
+  // Create imageAlt cell
+  if (imgNode?.alt) {
+    // Create a container for the alt text
+    const altCell = document.createElement('div');
+    altCell.textContent = imgNode.alt;
+    // Add Universal Editor attributes for imageAlt property
+    altCell.setAttribute('data-aue-prop', 'imageAlt');
+    altCell.setAttribute('data-aue-type', 'text');
+    // Add the alt text cell as a new row in the table
+    cells.push([altCell]);
+  }
+
+  // Create title cell
+  if (h) {
+    // Create a container for the title
+    const titleCell = document.createElement('div');
+    // Create the heading element (default to h2 if no tag specified)
+    const hEl = document.createElement(h.tag || 'h2' || 'h1');
+    // Set the heading content, replacing <br> tags with spaces
+    hEl.innerHTML = (h.text || '').replace(/<br\s*\/?>/gi, ' ');
+    // Add Universal Editor attributes for title property
+    hEl.setAttribute('data-aue-prop', 'title');
+    hEl.setAttribute('data-aue-type', 'richtext');
+    titleCell.appendChild(hEl);
+    // Add the title cell as a new row in the table
+    cells.push([titleCell]);
+  }
+
+  // Create description cell
+  if (descs.length > 0) {
+    // Create a container for the description
+    const descCell = document.createElement('div');
+    // Create a wrapper div for all description paragraphs
+    const descWrapper = document.createElement('div');
+    // Add Universal Editor attributes for description property
+    descWrapper.setAttribute('data-aue-prop', 'description');
+    descWrapper.setAttribute('data-aue-type', 'richtext');
+
+    // Process each description paragraph
+    for (const p of descs) {
+      const pEl = document.createElement('p');
+      // Set paragraph content, replacing <br> tags with spaces
+      pEl.innerHTML = (p.text || '').replace(/<br\s*\/?>/gi, ' ');
+      descWrapper.appendChild(pEl);
+    }
+    descCell.appendChild(descWrapper);
+    // Add the description cell as a new row in the table
+    cells.push([descCell]);
+  }
+
+  // Create link cell
+  if (ctaNode) {
+    // Create a container for the link
+    const linkCell = document.createElement('div');
+    // Create a wrapper for the link with Universal Editor attributes
+    const linkWrapper = document.createElement('div');
+    linkWrapper.setAttribute('data-aue-prop', 'link');
+    linkWrapper.setAttribute('data-aue-type', 'aem-content');
+
+    // Create the actual anchor element
+    const a = document.createElement('a');
+    a.href = ctaNode.link || '#';
+    // Use CTA text or default to 'Learn More'
+    a.textContent = (ctaNode.text || '').trim() || 'Learn More';
+    linkWrapper.appendChild(a);
+    linkCell.appendChild(linkWrapper);
+    // Add the link cell as a new row in the table
+    cells.push([linkCell]);
+  }
+
+  // Create linkText cell
+  if (ctaNode) {
+    // Create a container for the link text (separate from the link itself)
+    const linkTextCell = document.createElement('div');
+    // Use CTA text or default to 'Learn More'
+    linkTextCell.textContent = (ctaNode.text || '').trim() || 'Learn More';
+    // Add Universal Editor attributes for linkText property
+    linkTextCell.setAttribute('data-aue-prop', 'linkText');
+    linkTextCell.setAttribute('data-aue-type', 'text');
+    // Add the link text cell as a new row in the table
+    cells.push([linkTextCell]);
+  }
+
+  // Create variant cell (default to 'default')
+  // This allows for different visual variations of the teaser component
+  const variantCell = document.createElement('div');
+  variantCell.textContent = 'default';
+  // Add Universal Editor attributes for variant property
+  variantCell.setAttribute('data-aue-prop', 'variant');
+  variantCell.setAttribute('data-aue-type', 'select');
+  // Add the variant cell as a new row in the table
+  cells.push([variantCell]);
+
+  // Create the final HTML table using WebImporter utility
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+  
+  // If not called from a parent function, append the table to the main container
+  if (!fromParent) main.appendChild(table);
+  
+  // Store the generated table HTML in the node object for later use
+  // eslint-disable-next-line no-param-reassign
+  node.htmlModule = table;
+}
+
+/* ---------------------------
    DOM → JSON
 ---------------------------- */
 
+/**
+ * Transforms text nodes that contain links by extracting the link element.
+ * 
+ * This function checks if a DOM node is a text element (p, h1-h6, span) that contains
+ * an anchor (<a>) tag as a child. If found, it creates a new anchor element with the
+ * same href and text content, effectively "promoting" the link from being nested
+ * inside a text element to being the primary element.
+ * 
+ * @param {Node} node - The DOM node to potentially transform
+ * @param {Document} documentRef - Document reference for creating new elements
+ * @returns {Node} Either a new anchor element if transformation occurred, or the original node
+ */
 function transformTextNodeWithLink(node, documentRef) {
   const tag = node.nodeName?.toLowerCase();
   if (
@@ -740,27 +407,51 @@ function transformTextNodeWithLink(node, documentRef) {
   return node;
 }
 
+/**
+ * Parses a DOM tree and converts it into a structured JavaScript object representation.
+ * 
+ * This function recursively traverses DOM nodes and creates a normalized object structure
+ * that can be used for further processing or conversion to other formats. It handles
+ * various HTML elements and applies transformations to create a clean, semantic structure.
+ * 
+ * @param {Element} root - The root DOM element to parse
+ * @returns {Array} Array of parsed node objects representing the DOM structure
+ */
 function parseDOM(root) {
+  /**
+   * Creates a normalized node object from a DOM element.
+   * Handles element transformation, filtering, and structural optimization.
+   * 
+   * @param {Node} node - The DOM node to convert
+   * @returns {Object|null} Parsed node object or null if node should be ignored
+   */
   const createNodeObject = (node) => {
     const doc = node.ownerDocument || document;
+    // Transform text nodes that contain links (extract the link as primary element)
     const transformed = transformTextNodeWithLink(node, doc);
     const n = transformed;
 
+    // Skip non-element nodes
     if (n.nodeType !== Node.ELEMENT_NODE) return null;
 
     let tagName = n.nodeName.toLowerCase();
     const style = window.getComputedStyle(n);
 
+    // Filter out hidden elements and unwanted tags
     if (style.display === 'none' || ['script', 'style', 'iframe', 'noscript'].includes(tagName)) {
       return null;
     }
-
+    
+    // Normalize tag names: convert article with only text to paragraph
     if (tagName === 'article' && containsOnlyText(n)) tagName = 'p';
+    // Convert unknown tags to generic div
     if (!KNOWN_TAGS.includes(tagName)) tagName = 'div';
 
+    // Initialize the base node object
     const obj = { type: tagName, children: [], classList: n.classList };
     let children = [];
 
+    // Handle divs that contain only text - convert to text nodes
     if (
       tagName === 'div'
       && n.childNodes
@@ -772,16 +463,19 @@ function parseDOM(root) {
       obj.tag = 'p';
     }
 
+    // Handle list elements
     if (tagName === 'ol' || tagName === 'ul') {
       obj.type = 'list';
       obj.tag = tagName;
     }
 
+    // Handle text-containing elements - extract their innerHTML as text
     if (['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span', 'li', 'summary'].includes(tagName)) {
       obj.text = n.innerHTML;
       obj.type = 'text';
       obj.tag = tagName;
     } else {
+      // For non-text elements, recursively process child nodes
       const tmp = [];
       for (const cn of Array.from(n.childNodes)) {
         const res = createNodeObject(cn);
@@ -790,34 +484,41 @@ function parseDOM(root) {
       children = tmp;
     }
 
+    // Handle image elements - extract src and alt attributes
     if (tagName === 'img') {
       obj.text = '';
       obj.link = n.src || '';
       obj.alt = n.alt || '';
     }
-
+    
+    // Handle anchor elements - extract href and text content
     if (tagName === 'a') {
       obj.text = n.innerText;
       obj.link = n.href || '';
     }
-
+    
+    // Handle button and submit input elements - convert to CTA (call-to-action) type
     if (tagName === 'button' || (tagName === 'input' && (n.type === 'button' || n.type === 'submit'))) {
       const txt = n.value || n.textContent.trim();
-      if (!txt) return null;
+      if (!txt) return null; // Skip buttons without text
       obj.type = 'cta';
       obj.text = txt;
+      // Try to find associated action URL from various sources
       obj.link = n.formAction
         || n.getAttribute('formaction')
         || (n.closest('a') ? n.closest('a').href : '');
     } else if (tagName === 'input') {
+      // Skip other input types
       return null;
     }
 
+    // Extract background images from container elements
     if (tagName === 'div' || tagName === 'section') {
       const bg = getBackgroundImage(n);
       if (bg) obj.backgroundImage = bg;
     }
 
+    // Remove empty wrapper elements (divs/sections with no children)
     const filtered = [];
     for (const child of children) {
       const emptyWrap = (child.type === 'div' || child.type === 'section')
@@ -826,12 +527,15 @@ function parseDOM(root) {
     }
     children = filtered;
 
+    // Flatten unnecessary nesting: unwrap single-child divs
     while (children.length === 1 && children[0].type === 'div') {
       const inner = children[0];
+      // Preserve background image from inner div
       if (inner.backgroundImage) obj.backgroundImage = inner.backgroundImage;
       children = inner.children || [];
     }
 
+    // Categorize children by type for pattern matching
     const textNodes = [];
     const imageNodes = [];
     const linkOrButtonNodes = [];
@@ -842,10 +546,12 @@ function parseDOM(root) {
       else if (['a', 'button', 'input', 'cta', 'link'].includes(c.type)) linkOrButtonNodes.push(c);
     }
 
+    // Optimization: if container has only one text child and no background, return the text directly
     if (children.length === 1 && textNodes.length === 1 && !obj.backgroundImage) {
       return textNodes[0];
     }
 
+    // Optimization: if container has only one link/button child, promote it to container level
     if (children.length === 1 && linkOrButtonNodes.length === 1) {
       obj.type = linkOrButtonNodes[0].type;
       obj.text = linkOrButtonNodes[0].text;
@@ -853,6 +559,7 @@ function parseDOM(root) {
       return obj;
     }
 
+    // Pattern: Image + Text + Link/Button = imageTextLink component
     if (imageNodes.length === 1 && textNodes.length > 0 && linkOrButtonNodes.length > 0) {
       obj.type = 'imageTextLink';
       obj.children = [
@@ -863,6 +570,7 @@ function parseDOM(root) {
       return obj;
     }
 
+    // Pattern: Image + Text = imageText component
     if (imageNodes.length === 1 && textNodes.length > 0) {
       obj.type = 'imageText';
       obj.children = [
@@ -872,12 +580,15 @@ function parseDOM(root) {
       return obj;
     }
 
+    // Default: if multiple children and not a list, treat as generic container
     if (children.length > 1 && obj.type !== 'list') obj.type = 'div';
 
+    // Only include children array if it has content
     obj.children = children.length > 0 ? children : undefined;
     return obj;
   };
 
+  // Process all child nodes of the root element
   const out = [];
   for (const n of Array.from(root.childNodes)) {
     const res = createNodeObject(n);
@@ -969,6 +680,7 @@ function removeEmptyTags(domStructure) {
         }
       }
       if (newChild.length > 0) {
+        // eslint-disable-next-line no-param-reassign
         domStructure.children = [];
         for (const e of newChild) domStructure.children.push(e);
       }
@@ -987,6 +699,7 @@ function flattenComplexNodes(domStructure) {
     if (!node.children || node.children.length === 0) return [node];
     if (isSimple(node)) return [node];
 
+    // eslint-disable-next-line no-param-reassign
     node.children = node.children.flatMap(flattenNode);
     return [node];
   };
@@ -996,46 +709,17 @@ function flattenComplexNodes(domStructure) {
 }
 
 /* ---------------------------
-   Enhanced parser with all block types
+   Teaser-focused parser
 ---------------------------- */
 
 function parseNode(node, main, fromParent = false) {
   if (node.children) {
+    // eslint-disable-next-line no-param-reassign
     node.children = node.children
       .filter((e) => e.type !== 'div' || (e.children && e.children.length > 0));
   }
 
-  // Block detection and processing - order matters (most specific first)
-  if (possibleHero(node)) {
-    createHeroBlockHtml(main, node, fromParent);
-    return;
-  }
-
-  if (possibleQuote(node)) {
-    createQuoteBlockHtml(main, node, fromParent);
-    return;
-  }
-
-  if (possibleCards(node)) {
-    createCardsBlockHtml(main, node, fromParent);
-    return;
-  }
-
-  if (possibleColumns(node)) {
-    createColumnsBlockHtml(main, node, fromParent);
-    return;
-  }
-
-  if (possibleFragment(node)) {
-    createFragmentBlockHtml(main, node, fromParent);
-    return;
-  }
-
-  if (possibleLanguageSwitcher(node)) {
-    createLanguageSwitcherBlockHtml(main, node, fromParent);
-    return;
-  }
-
+  // Teaser detection and processing
   if (possibleTeaser(node)) {
     createTeaserBlockHtml(main, node, fromParent);
     return;
@@ -1052,6 +736,7 @@ function parseNode(node, main, fromParent = false) {
         elem.appendChild(li);
       }
     }
+    // eslint-disable-next-line no-param-reassign
     node.htmlModule = elem;
     if (elem && !fromParent) main.appendChild(elem);
     return;
@@ -1063,6 +748,7 @@ function parseNode(node, main, fromParent = false) {
     let inner = node.text;
     if (inner) inner = inner.replace(/<br\s*\/?>/gi, ' ');
     el.innerHTML = inner;
+    // eslint-disable-next-line no-param-reassign
     node.htmlModule = el;
     if (el && !fromParent) main.appendChild(el);
     return;
@@ -1073,6 +759,7 @@ function parseNode(node, main, fromParent = false) {
     const img = document.createElement('img');
     img.src = node.link;
     if (node.alt) img.alt = node.alt;
+    // eslint-disable-next-line no-param-reassign
     node.htmlModule = img;
     if (img && !fromParent) main.appendChild(img);
     return;
@@ -1084,6 +771,7 @@ function parseNode(node, main, fromParent = false) {
     a.href = node.link || '#';
     a.title = node.text || '';
     a.innerText = node.text || '';
+    // eslint-disable-next-line no-param-reassign
     node.htmlModule = a;
     if (a && !fromParent) main.appendChild(a);
     return;

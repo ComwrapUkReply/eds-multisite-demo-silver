@@ -31,3 +31,203 @@
     order: unset;
   }
 }
+
+/* stylelint-disable no-descending-specificity */
+
+/* Column Variants - Base styles */
+.columns.variant-bordered > div {
+  gap: 0;
+}
+
+.columns.variant-bordered > div > div {
+  border: 1px solid #e5e7eb;
+  padding: 24px;
+  position: relative;
+}
+
+.columns.variant-bordered > div > div:not(:last-child) {
+  border-right: none;
+}
+
+.columns.variant-bordered > div > div:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.columns.variant-bordered > div > div:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-right: 1px solid #e5e7eb;
+}
+
+.columns.variant-card > div {
+  gap: 32px;
+}
+
+.columns.variant-card > div > div {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -1px rgb(0 0 0 / 6%);
+  padding: 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.columns.variant-card > div > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -2px rgb(0 0 0 / 5%);
+}
+
+.columns.variant-highlighted > div {
+  gap: 16px;
+}
+
+.columns.variant-highlighted > div > div {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-left: 4px solid #3b82f6;
+  padding: 24px;
+  position: relative;
+}
+
+.columns.variant-highlighted > div > div::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+}
+
+.columns.variant-minimal > div {
+  gap: 48px;
+}
+
+.columns.variant-minimal > div > div {
+  padding: 16px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.columns.variant-minimal > div > div:last-child {
+  border-bottom: none;
+}
+
+/* Image Text Split Variant */
+.columns.variant-image-text-split {
+  padding: 80px 140px 60px;
+  background: #fff;
+}
+
+.columns.variant-image-text-split > div {
+  display: flex;
+  align-items: center;
+  gap: 67px;
+  margin-bottom: 67px;
+}
+
+.columns.variant-image-text-split > div > div:first-child {
+  flex: 0 0 572px;
+  height: 408px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.columns.variant-image-text-split > div > div:first-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.columns.variant-image-text-split > div > div:last-child {
+  flex: 1;
+  max-width: 437px;
+}
+
+.columns.variant-image-text-split h1,
+.columns.variant-image-text-split h2,
+.columns.variant-image-text-split h3,
+.columns.variant-image-text-split h4,
+.columns.variant-image-text-split h5,
+.columns.variant-image-text-split h6 {
+  color: #0063be;
+  font-family: Interstate, sans-serif;
+  font-weight: 275;
+  font-size: 34px;
+  line-height: 34px;
+  letter-spacing: 0.05px;
+  margin: 0 0 24px;
+}
+
+.columns.variant-image-text-split p {
+  color: #000;
+  font-family: Interstate, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+}
+
+.columns.variant-image-text-split::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #e5e7eb;
+  margin-top: 0;
+}
+
+/* Responsive adjustments for variants */
+@media (width < 900px) {
+  .columns.variant-card > div > div {
+    margin-bottom: 16px;
+  }
+  
+  .columns.variant-bordered > div > div {
+    border-right: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .columns.variant-bordered > div > div:not(:last-child) {
+    border-right: 1px solid #e5e7eb;
+  }
+  
+  .columns.variant-minimal > div > div {
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  /* Image Text Split Mobile */
+  .columns.variant-image-text-split {
+    padding: 40px 20px 30px;
+  }
+
+  .columns.variant-image-text-split > div {
+    flex-direction: column;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+
+  .columns.variant-image-text-split > div > div:first-child {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+    height: 250px;
+  }
+
+  .columns.variant-image-text-split > div > div:last-child {
+    max-width: 100%;
+  }
+
+  .columns.variant-image-text-split h1,
+  .columns.variant-image-text-split h2,
+  .columns.variant-image-text-split h3,
+  .columns.variant-image-text-split h4,
+  .columns.variant-image-text-split h5,
+  .columns.variant-image-text-split h6 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+}
