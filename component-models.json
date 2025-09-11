@@ -271,9 +271,7 @@
       {
         "component": "select",
         "name": "classes_background",
-        "value": "",
-        "label": "Options",
-        "valueType": "string",
+        "label": "Background",
         "options": [
           {
             "name": "Background",
@@ -291,11 +289,9 @@
         ]
       },
       {
-        "component": "checkbox",
+        "component": "select",
         "name": "classes_alignment",
-        "value": "",
-        "label": "Options",
-        "valueType": "string",
+        "label": "Alignment",
         "options": [
           {
             "name": "Alignment",
