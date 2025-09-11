@@ -269,7 +269,7 @@
         "valueType": "string"
       },
       {
-        "component": "multiselect",
+        "component": "select",
         "name": "classes",
         "value": "",
         "label": "Options",
@@ -285,19 +285,6 @@
               {
                 "name": "Solid",
                 "value": "solid"
-              }
-            ]
-          },
-          {
-            "name": "Alignment",
-            "children": [
-              {
-                "name": "Right Align",
-                "value": "right"
-              },
-              {
-                "name": "Center Align",
-                "value": "center"
               }
             ]
           }

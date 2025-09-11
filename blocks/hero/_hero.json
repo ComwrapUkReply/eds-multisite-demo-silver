@@ -42,7 +42,7 @@
           "valueType": "string"
         },
         {
-          "component": "multiselect",
+          "component": "select",
           "name": "classes",
           "value": "",
           "label": "Options",
@@ -53,13 +53,6 @@
               "children": [
                 { "name": "Gradient", "value": "gradient" },
                 { "name": "Solid", "value": "solid" }
-              ]
-            },
-            {
-              "name": "Alignment",
-              "children": [
-                { "name": "Right Align", "value": "right" },
-                { "name": "Center Align", "value": "center" }
               ]
             }
           ]
