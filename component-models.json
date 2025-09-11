@@ -230,7 +230,7 @@
       },
       {
         "component": "select",
-        "name": "style",
+        "name": "classes",
         "label": "Style",
         "options": [
           {
