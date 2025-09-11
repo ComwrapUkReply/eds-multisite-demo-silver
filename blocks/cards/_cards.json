@@ -33,7 +33,7 @@
   ],
   "models": [
     {
-      "id": "cards",
+      "id": "card",
       "fields": [
         {
           "component": "select",
