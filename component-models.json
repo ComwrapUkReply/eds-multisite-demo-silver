@@ -198,6 +198,36 @@
     ]
   },
   {
+    "id": "cards",
+    "fields": [
+      {
+        "component": "select",
+        "name": "style",
+        "label": "Card Style",
+        "valueType": "string",
+        "value": "",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Border",
+            "value": "border"
+          },
+          {
+            "name": "Shadow",
+            "value": "shadow"
+          },
+          {
+            "name": "Border and Shadow",
+            "value": "border shadow"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "card",
     "fields": [
       {
