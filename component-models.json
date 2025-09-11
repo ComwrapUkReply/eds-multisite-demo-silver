@@ -201,27 +201,11 @@
     "id": "card",
     "fields": [
       {
-        "component": "select",
-        "name": "classes",
-        "label": "Style",
-        "options": [
-          {
-            "name": "Default",
-            "value": ""
-          },
-          {
-            "name": "Card Style",
-            "value": "card"
-          },
-          {
-            "name": "Bordered",
-            "value": "bordered"
-          },
-          {
-            "name": "Highlighted",
-            "value": "highlighted"
-          }
-        ]
+        "component": "text",
+        "name": "title",
+        "value": "",
+        "label": "Title",
+        "valueType": "string"
       }
     ]
   },
