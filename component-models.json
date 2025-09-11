@@ -270,7 +270,7 @@
       },
       {
         "component": "multiselect",
-        "name": "classes",
+        "name": "background",
         "value": "",
         "label": "Options",
         "valueType": "string",
@@ -287,7 +287,16 @@
                 "value": "solid"
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "alignment",
+        "value": "",
+        "label": "Options",
+        "valueType": "string",
+        "options": [
           {
             "name": "Alignment",
             "children": [
