@@ -270,7 +270,7 @@
       },
       {
         "component": "select",
-        "name": "classes",
+        "name": "imagePosition",
         "value": "right",
         "label": "Image Position",
         "valueType": "string",
@@ -299,7 +299,7 @@
       },
       {
         "component": "multiselect",
-        "name": "classes",
+        "name": "multiselect",
         "value": "",
         "label": "Options",
         "valueType": "string",
