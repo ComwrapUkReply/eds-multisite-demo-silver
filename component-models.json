@@ -269,8 +269,8 @@
         "valueType": "string"
       },
       {
-        "component": "multiselect",
-        "name": "background",
+        "component": "select",
+        "name": "classes_background",
         "value": "",
         "label": "Options",
         "valueType": "string",
@@ -291,8 +291,8 @@
         ]
       },
       {
-        "component": "select",
-        "name": "alignment",
+        "component": "checkbox",
+        "name": "classes_alignment",
         "value": "",
         "label": "Options",
         "valueType": "string",
