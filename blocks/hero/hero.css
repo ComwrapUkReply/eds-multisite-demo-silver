@@ -268,3 +268,97 @@
 .hero-wrapper:has(.center) .hero-content-col {
   text-align: center;
 }
+
+/* Image position variants */
+.hero-wrapper:has(.image-position-left) .hero {
+  grid-template-columns: 1fr 1fr;
+}
+
+.hero-wrapper:has(.image-position-left) .hero-image-row {
+  grid-column: 1;
+  grid-row: 1;
+  left: 0;
+  right: auto;
+}
+
+.hero-wrapper:has(.image-position-left) .hero-content-row {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.hero-wrapper:has(.image-position-center) .hero {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+.hero-wrapper:has(.image-position-center) .hero-image-row {
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  min-height: 300px;
+}
+
+.hero-wrapper:has(.image-position-center) .hero-content-row {
+  grid-column: 1;
+  grid-row: 2;
+  padding: var(--space-16);
+}
+
+.hero-wrapper:has(.image-position-top) .hero {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+.hero-wrapper:has(.image-position-top) .hero-image-row {
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
+  width: 100%;
+  height: 250px;
+  min-height: 250px;
+}
+
+.hero-wrapper:has(.image-position-top) .hero-content-row {
+  grid-column: 1;
+  grid-row: 2;
+  padding: var(--space-16);
+}
+
+.hero-wrapper:has(.image-position-bottom) .hero {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+}
+
+.hero-wrapper:has(.image-position-bottom) .hero-image-row {
+  grid-column: 1;
+  grid-row: 2;
+  position: relative;
+  width: 100%;
+  height: 250px;
+  min-height: 250px;
+}
+
+.hero-wrapper:has(.image-position-bottom) .hero-content-row {
+  grid-column: 1;
+  grid-row: 1;
+  padding: var(--space-16);
+}
+
+/* Object position variants for the image */
+.hero-wrapper:has(.image-position-left) .hero-image {
+  object-position: left;
+}
+
+.hero-wrapper:has(.image-position-center) .hero-image {
+  object-position: center;
+}
+
+.hero-wrapper:has(.image-position-top) .hero-image {
+  object-position: top;
+}
+
+.hero-wrapper:has(.image-position-bottom) .hero-image {
+  object-position: bottom;
+}

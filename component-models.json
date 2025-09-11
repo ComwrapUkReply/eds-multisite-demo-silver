@@ -269,6 +269,35 @@
         "valueType": "string"
       },
       {
+        "component": "select",
+        "name": "classes",
+        "value": "right",
+        "label": "Image Position",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Right",
+            "value": "right"
+          },
+          {
+            "name": "Left",
+            "value": "left"
+          },
+          {
+            "name": "Center",
+            "value": "center"
+          },
+          {
+            "name": "Top",
+            "value": "top"
+          },
+          {
+            "name": "Bottom",
+            "value": "bottom"
+          }
+        ]
+      },
+      {
         "component": "multiselect",
         "name": "classes",
         "value": "",

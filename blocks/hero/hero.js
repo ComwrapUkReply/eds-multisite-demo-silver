@@ -7,6 +7,9 @@ export default function decorate(block) {
   // Get all rows from the block
   const rows = [...block.children];
 
+  // Apply image position class based on the imagePosition field
+  applyImagePositionClass(block);
+
   // Add classes to rows
   rows.forEach((row, rowIndex) => {
     const columns = [...row.children];
@@ -90,4 +93,51 @@ function initializeHeroInteractions(block) {
       }
     });
   }
+}
+
+/**
+ * Apply image position class based on the imagePosition field
+ * This function reads the imagePosition value and applies the appropriate CSS class
+ */
+function applyImagePositionClass(block) {
+  // Find the wrapper element (parent of the block)
+  const wrapper = block.closest('.hero-wrapper') || block.parentElement;
+  
+  if (!wrapper) return;
+
+  // Get the imagePosition value from the block's data attributes or content
+  // This will be populated by the Universal Editor based on the field value
+  const imagePosition = getImagePositionValue(block);
+  
+  if (imagePosition && imagePosition !== 'right') {
+    // Remove any existing image position classes
+    wrapper.classList.remove(
+      'image-position-left',
+      'image-position-center', 
+      'image-position-top',
+      'image-position-bottom'
+    );
+    
+    // Add the new image position class
+    wrapper.classList.add(`image-position-${imagePosition}`);
+  }
+}
+
+/**
+ * Extract image position value from block content or data attributes
+ * This function looks for the imagePosition field value in the block structure
+ */
+function getImagePositionValue(block) {
+  // Look for imagePosition in data attributes first
+  const dataPosition = block.dataset.imagePosition || block.dataset.imageposition;
+  if (dataPosition) return dataPosition;
+  
+  // Look for imagePosition in the block's text content (fallback)
+  // This handles cases where the value is stored in the content structure
+  const textContent = block.textContent || '';
+  const positionMatch = textContent.match(/imagePosition[:\s]*(\w+)/i);
+  if (positionMatch) return positionMatch[1];
+  
+  // Default to 'right' if no position is found
+  return 'right';
 }
