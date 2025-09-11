@@ -201,18 +201,6 @@
     "id": "card",
     "fields": [
       {
-        "component": "text",
-        "name": "title",
-        "value": "",
-        "label": "Title",
-        "valueType": "string"
-      }
-    ]
-  },
-  {
-    "id": "card",
-    "fields": [
-      {
         "component": "reference",
         "valueType": "string",
         "name": "image",
@@ -286,30 +274,6 @@
           {
             "name": "Minimal",
             "value": "minimal"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "column",
-    "fields": [
-      {
-        "component": "select",
-        "name": "classes",
-        "label": "Style",
-        "options": [
-          {
-            "name": "Default",
-            "value": ""
-          },
-          {
-            "name": "Shadow",
-            "value": "shadow"
-          },
-          {
-            "name": "Gradient",
-            "value": "gradient"
           }
         ]
       }

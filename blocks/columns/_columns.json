@@ -50,21 +50,6 @@
           ]
         }
       ]
-    },
-    {
-      "id": "column",
-      "fields": [
-        {
-          "component": "select",
-          "name": "classes",
-          "label": "Style",
-          "options": [
-            { "name": "Default", "value": "" },
-            { "name": "Shadow", "value": "shadow"},
-            { "name": "Gradient", "value": "gradient"}
-          ]
-        }
-      ]
     }
   ],
   "filters": [
