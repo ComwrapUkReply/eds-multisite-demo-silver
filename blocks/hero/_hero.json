@@ -43,7 +43,7 @@
         },
         {
           "component": "select",
-          "name": "classes",
+          "name": "classes_position",
           "value": "",
           "label": "Image Position",
           "valueType": "string",
@@ -57,7 +57,7 @@
         },
         {
           "component": "select",
-          "name": "classes",
+          "name": "classes_background",
           "value": "",
           "label": "Background",
           "valueType": "string",
