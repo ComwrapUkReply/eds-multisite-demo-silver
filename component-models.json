@@ -267,6 +267,41 @@
         "value": "",
         "label": "Text",
         "valueType": "string"
+      },
+      {
+        "component": "multiselect",
+        "name": "classes",
+        "value": "",
+        "label": "Options",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Background",
+            "children": [
+              {
+                "name": "Gradient",
+                "value": "gradient"
+              },
+              {
+                "name": "Solid",
+                "value": "solid"
+              }
+            ]
+          },
+          {
+            "name": "Alignment",
+            "children": [
+              {
+                "name": "Right Align",
+                "value": "right"
+              },
+              {
+                "name": "Center Align",
+                "value": "center"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
