@@ -1,0 +1,44 @@
+{
+  "options": [
+    {
+      "name": "None",
+      "value": ""
+    },
+    {
+      "name": "3XS - Triple Extra Small",
+      "value": "margin-bottom-3xs"
+    },
+    {
+      "name": "2XS - Double Extra Small",
+      "value": "margin-bottom-2xs"
+    },
+    {
+      "name": "XS - Extra Small",
+      "value": "margin-bottom-xs"
+    },
+    {
+      "name": "S - Small",
+      "value": "margin-bottom-s"
+    },
+    {
+      "name": "M - Medium",
+      "value": "margin-bottom-m"
+    },
+    {
+      "name": "L - Large",
+      "value": "margin-bottom-l"
+    },
+    {
+      "name": "XL - Extra Large",
+      "value": "margin-bottom-xl"
+    },
+    {
+      "name": "2XL - Double Extra large",
+      "value": "margin-bottom-2xl"
+    },
+    {
+      "name": "3XL - Triple Extra large",
+      "value": "margin-bottom-3xl"
+    }
+  ]
+}

@@ -322,6 +322,833 @@
     ]
   },
   {
+    "id": "hero-banner",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "id",
+        "label": "ID",
+        "value": ""
+      },
+      {
+        "component": "select",
+        "name": "layout",
+        "label": "Layout",
+        "options": [
+          {
+            "name": "hero-level_1",
+            "value": "hero-level_1"
+          },
+          {
+            "name": "hero-level_2",
+            "value": "hero-level_2"
+          },
+          {
+            "name": "hero-level_3",
+            "value": "hero-level_3"
+          },
+          {
+            "name": "hero-level_4",
+            "value": "hero-level_4"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "hero-option",
+        "label": "Hero Option",
+        "value": "",
+        "options": [
+          {
+            "name": "Hero",
+            "value": "Hero"
+          },
+          {
+            "name": "Landing page",
+            "value": "Landingpage"
+          }
+        ],
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_2"
+          ]
+        }
+      },
+      {
+        "component": "boolean",
+        "label": "Apply Custom Height",
+        "name": "is_custom_height_mode",
+        "valueType": "boolean",
+        "description": "Select the Hero custom height taking into account content length",
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "number",
+        "valueType": "number",
+        "name": "custom-height",
+        "label": "Custom Height",
+        "placeholder": null,
+        "validation": {
+          "numberMin": 350,
+          "numberMax": 700
+        },
+        "condition": {
+          "and": [
+            {
+              "==": [
+                {
+                  "var": "layout"
+                },
+                "hero-level_3"
+              ]
+            },
+            {
+              "==": [
+                {
+                  "var": "is_custom_height_mode"
+                },
+                true
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "title",
+        "label": "Title",
+        "value": "",
+        "condition": {
+          "or": [
+            {
+              "==": [
+                {
+                  "var": "layout"
+                },
+                "hero-level_2"
+              ]
+            },
+            {
+              "==": [
+                {
+                  "var": "layout"
+                },
+                "hero-level_4"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "headline_new",
+        "label": "Title",
+        "value": "",
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "boolean",
+        "label": "Render Headline Bigger",
+        "name": "headline-size",
+        "valueType": "boolean",
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "subtitle",
+        "label": "Subtitle",
+        "value": "",
+        "condition": {
+          "or": [
+            {
+              "==": [
+                {
+                  "var": "layout"
+                },
+                "hero-level_2"
+              ]
+            },
+            {
+              "==": [
+                {
+                  "var": "layout"
+                },
+                "hero-level_3"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string",
+        "condition": {
+          "!==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_1"
+          ]
+        }
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt Text",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "image-title",
+        "label": "Image Title",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link",
+        "label": "Button Url",
+        "value": "",
+        "condition": {
+          "!==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_1"
+          ]
+        }
+      },
+      {
+        "component": "select",
+        "name": "link-target",
+        "label": "Button Target",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Self",
+            "value": ""
+          },
+          {
+            "name": "Blank",
+            "value": "_blank"
+          }
+        ],
+        "condition": {
+          "!==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_1"
+          ]
+        }
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link-label",
+        "label": "Button Text",
+        "condition": {
+          "!==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_1"
+          ]
+        }
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "link-style",
+        "label": "Button Style",
+        "value": "cta",
+        "options": [
+          {
+            "name": "CTA",
+            "value": "cta"
+          },
+          {
+            "name": "CTA inverted",
+            "value": "cta-inverted"
+          },
+          {
+            "name": "CTA white career",
+            "value": "cta-white-career"
+          },
+          {
+            "name": "CTA white career (small)",
+            "value": "cta-white-career-small"
+          },
+          {
+            "name": "CTA white/blue border",
+            "value": "cta-white-blue-border"
+          },
+          {
+            "name": "CTA blue",
+            "value": "cta-blue"
+          },
+          {
+            "name": "Standard",
+            "value": "standard"
+          },
+          {
+            "name": "Animated",
+            "value": "animated"
+          }
+        ],
+        "condition": {
+          "!==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_1"
+          ]
+        }
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link-aria-label",
+        "label": "Button Aria Label",
+        "condition": {
+          "!==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_1"
+          ]
+        }
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link-2",
+        "label": "Button 2 Url",
+        "value": "",
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "select",
+        "name": "link-2-target",
+        "label": "Button 2 Target",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Self",
+            "value": ""
+          },
+          {
+            "name": "Blank",
+            "value": "_blank"
+          }
+        ],
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link-2-label",
+        "label": "Button 2 Text",
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "link-2-style",
+        "label": "Button 2 Style",
+        "value": "cta",
+        "options": [
+          {
+            "name": "CTA",
+            "value": "cta"
+          },
+          {
+            "name": "CTA inverted",
+            "value": "cta-inverted"
+          },
+          {
+            "name": "CTA white career",
+            "value": "cta-white-career"
+          },
+          {
+            "name": "CTA white career (small)",
+            "value": "cta-white-career-small"
+          },
+          {
+            "name": "CTA white/blue border",
+            "value": "cta-white-blue-border"
+          },
+          {
+            "name": "CTA blue",
+            "value": "cta-blue"
+          },
+          {
+            "name": "Standard",
+            "value": "standard"
+          },
+          {
+            "name": "Animated",
+            "value": "animated"
+          }
+        ],
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link-2-aria-label",
+        "label": "Button 2 Aria Label",
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link-3",
+        "label": "Button 3 Url",
+        "value": "",
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "select",
+        "name": "link-3-target",
+        "label": "Button 3 Target",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Self",
+            "value": ""
+          },
+          {
+            "name": "Blank",
+            "value": "_blank"
+          }
+        ],
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link-3-label",
+        "label": "Button 3 Text",
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "link-3-style",
+        "label": "Button 3 Style",
+        "value": "cta",
+        "options": [
+          {
+            "name": "CTA",
+            "value": "cta"
+          },
+          {
+            "name": "CTA inverted",
+            "value": "cta-inverted"
+          },
+          {
+            "name": "CTA white career",
+            "value": "cta-white-career"
+          },
+          {
+            "name": "CTA white career (small)",
+            "value": "cta-white-career-small"
+          },
+          {
+            "name": "CTA white/blue border",
+            "value": "cta-white-blue-border"
+          },
+          {
+            "name": "CTA blue",
+            "value": "cta-blue"
+          },
+          {
+            "name": "Standard",
+            "value": "standard"
+          },
+          {
+            "name": "Animated",
+            "value": "animated"
+          }
+        ],
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link-3-aria-label",
+        "label": "Button 3 Aria Label",
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link-4",
+        "label": "Button 4 Url",
+        "value": "",
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "select",
+        "name": "link-4-target",
+        "label": "Button 4 Target",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Self",
+            "value": ""
+          },
+          {
+            "name": "Blank",
+            "value": "_blank"
+          }
+        ],
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link-4-label",
+        "label": "Button 4 Text",
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "link-4-style",
+        "label": "Button 4 Style",
+        "value": "cta",
+        "options": [
+          {
+            "name": "CTA",
+            "value": "cta"
+          },
+          {
+            "name": "CTA inverted",
+            "value": "cta-inverted"
+          },
+          {
+            "name": "CTA white career",
+            "value": "cta-white-career"
+          },
+          {
+            "name": "CTA white career (small)",
+            "value": "cta-white-career-small"
+          },
+          {
+            "name": "CTA white/blue border",
+            "value": "cta-white-blue-border"
+          },
+          {
+            "name": "CTA blue",
+            "value": "cta-blue"
+          },
+          {
+            "name": "Standard",
+            "value": "standard"
+          },
+          {
+            "name": "Animated",
+            "value": "animated"
+          }
+        ],
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link-4-aria-label",
+        "label": "Button 4 Aria Label",
+        "condition": {
+          "==": [
+            {
+              "var": "layout"
+            },
+            "hero-level_3"
+          ]
+        }
+      },
+      {
+        "component": "select",
+        "name": "classes",
+        "label": "Background color",
+        "value": "",
+        "condition": {
+          "or": [
+            {
+              "==": [
+                {
+                  "var": "layout"
+                },
+                "hero-level_2"
+              ]
+            },
+            {
+              "==": [
+                {
+                  "var": "layout"
+                },
+                "hero-level_3"
+              ]
+            }
+          ]
+        },
+        "options": [
+          {
+            "name": "None",
+            "value": ""
+          },
+          {
+            "name": "Grey",
+            "value": "bg-grey"
+          },
+          {
+            "name": "Blue",
+            "value": "bg-blue"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "margin-top",
+        "value": "",
+        "label": "Margin Top",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "None",
+            "value": ""
+          },
+          {
+            "name": "3XS - Triple Extra Small",
+            "value": "margin-top-3xs"
+          },
+          {
+            "name": "2XS - Double Extra Small",
+            "value": "margin-top-2xs"
+          },
+          {
+            "name": "XS - Extra Small",
+            "value": "margin-top-xs"
+          },
+          {
+            "name": "S - Small",
+            "value": "margin-top-s"
+          },
+          {
+            "name": "M - Medium",
+            "value": "margin-top-m"
+          },
+          {
+            "name": "L - Large",
+            "value": "margin-top-l"
+          },
+          {
+            "name": "XL - Extra Large",
+            "value": "margin-top-xl"
+          },
+          {
+            "name": "2XL - Double Extra large",
+            "value": "margin-top-2xl"
+          },
+          {
+            "name": "3XL - Triple Extra large",
+            "value": "margin-top-3xl"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "margin-bottom",
+        "label": "Margin Bottom",
+        "value": "",
+        "options": [
+          {
+            "name": "None",
+            "value": ""
+          },
+          {
+            "name": "3XS - Triple Extra Small",
+            "value": "margin-bottom-3xs"
+          },
+          {
+            "name": "2XS - Double Extra Small",
+            "value": "margin-bottom-2xs"
+          },
+          {
+            "name": "XS - Extra Small",
+            "value": "margin-bottom-xs"
+          },
+          {
+            "name": "S - Small",
+            "value": "margin-bottom-s"
+          },
+          {
+            "name": "M - Medium",
+            "value": "margin-bottom-m"
+          },
+          {
+            "name": "L - Large",
+            "value": "margin-bottom-l"
+          },
+          {
+            "name": "XL - Extra Large",
+            "value": "margin-bottom-xl"
+          },
+          {
+            "name": "2XL - Double Extra large",
+            "value": "margin-bottom-2xl"
+          },
+          {
+            "name": "3XL - Triple Extra large",
+            "value": "margin-bottom-3xl"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "hero",
     "fields": [
       {
@@ -347,8 +1174,8 @@
       },
       {
         "component": "select",
-        "name": "classes_position",
-        "value": "",
+        "name": "position",
+        "value": "true",
         "label": "Image Position",
         "valueType": "string",
         "options": [
@@ -376,7 +1203,7 @@
       },
       {
         "component": "select",
-        "name": "classes_background",
+        "name": "background",
         "value": "",
         "label": "Background",
         "valueType": "string",

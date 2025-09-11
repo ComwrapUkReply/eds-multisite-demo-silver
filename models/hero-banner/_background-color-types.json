@@ -1,0 +1,16 @@
+{
+  "options": [
+    {
+      "name": "None",
+      "value": ""
+    },
+    {
+      "name": "Grey",
+      "value": "bg-grey"
+    },
+    {
+      "name": "Blue",
+      "value": "bg-blue"
+    }
+  ]
+}

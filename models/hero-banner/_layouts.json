@@ -1,0 +1,21 @@
+{
+    "options": [
+      {
+        "name": "hero-level_1",
+        "value": "hero-level_1"
+      },
+      {
+        "name": "hero-level_2",
+        "value": "hero-level_2"
+      },
+      {
+        "name": "hero-level_3",
+        "value": "hero-level_3"
+      },
+      {
+        "name": "hero-level_4",
+        "value": "hero-level_4"
+      }
+    ]
+  }
+  
