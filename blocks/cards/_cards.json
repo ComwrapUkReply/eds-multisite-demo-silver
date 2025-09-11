@@ -33,6 +33,22 @@
   ],
   "models": [
     {
+      "id": "cards",
+      "fields": [
+        {
+          "component": "select",
+          "name": "classes",
+          "label": "Style",
+          "options": [
+            { "name": "Default", "value": "" },
+            { "name": "Card Style", "value": "card" },
+            { "name": "Bordered", "value": "bordered" },
+            { "name": "Highlighted", "value": "highlighted" }
+          ]
+        }
+      ]
+    },
+    {
       "id": "card",
       "fields": [
         {
@@ -62,17 +78,6 @@
           "value": "",
           "label": "Text",
           "valueType": "string"
-        },
-        {
-          "component": "select",
-          "name": "classes",
-          "label": "Style",
-          "options": [
-            { "name": "Default", "value": "" },
-            { "name": "Card Style", "value": "card" },
-            { "name": "Bordered", "value": "bordered" },
-            { "name": "Highlighted", "value": "highlighted" }
-          ]
         }
       ]
     }
