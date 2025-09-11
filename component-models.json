@@ -287,26 +287,6 @@
             ]
           }
         ]
-      },
-      {
-        "component": "select",
-        "name": "classes_alignment",
-        "label": "Alignment",
-        "options": [
-          {
-            "name": "Alignment",
-            "children": [
-              {
-                "name": "Right Align",
-                "value": "right"
-              },
-              {
-                "name": "Center Align",
-                "value": "center"
-              }
-            ]
-          }
-        ]
       }
     ]
   },
