@@ -136,8 +136,53 @@
           {
             "name": "Highlight",
             "value": "highlight"
+          },
+          {
+            "name": "Default",
+            "value": ""
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "accordion",
+    "fields": [
+      {
+        "component": "boolean",
+        "name": "accordion-single-open",
+        "label": "Allow Only One Item Open at a Time"
+      }
+    ]
+  },
+  {
+    "id": "accordionitem",
+    "fields": [
+      {
+        "component": "text",
+        "name": "accordion-item-title",
+        "label": "Accordion Item Title",
+        "valueType": "string",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "accordion-item-content",
+        "label": "Accordion Item Content",
+        "valueType": "string",
+        "value": ""
+      },
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Image",
+        "valueType": "string",
+        "multi": false
+      },
+      {
+        "component": "boolean",
+        "name": "accordion-item-open",
+        "label": "Initially Open"
       }
     ]
   },
@@ -231,6 +276,38 @@
             "value": "minimal"
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "download",
+    "fields": [
+      {
+        "component": "text",
+        "name": "downloadtitle",
+        "value": "",
+        "label": "Title"
+      },
+      {
+        "component": "richtext",
+        "name": "downloaddescription",
+        "value": "",
+        "label": "Description"
+      },
+      {
+        "component": "text",
+        "name": "downloadbuttonlabel",
+        "label": "Download Button Label"
+      },
+      {
+        "component": "aem-content",
+        "name": "downloadfile",
+        "label": "Asset",
+        "value": "",
+        "valueType": "string",
+        "validation": {
+          "rootPath": "/content/dam/aem-xwalk"
+        }
       }
     ]
   },
@@ -453,6 +530,151 @@
     ]
   },
   {
+    "id": "table",
+    "fields": [
+      {
+        "component": "multiselect",
+        "name": "classes",
+        "value": "",
+        "label": "Options",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Border",
+            "children": [
+              {
+                "name": "Striped",
+                "value": "striped"
+              },
+              {
+                "name": "Bordered",
+                "value": "bordered"
+              }
+            ]
+          },
+          {
+            "name": "Header",
+            "children": [
+              {
+                "name": "No Header",
+                "value": "no-header"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "filter",
+        "label": "Columns",
+        "valueType": "string",
+        "value": "table",
+        "options": [
+          {
+            "name": "1 Column",
+            "value": "table"
+          },
+          {
+            "name": "2 Columns",
+            "value": "table-2-columns"
+          },
+          {
+            "name": "3 Columns",
+            "value": "table-3-columns"
+          },
+          {
+            "name": "4 Columns",
+            "value": "table-4-columns"
+          },
+          {
+            "name": "5 Columns",
+            "value": "table-5-columns"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table-row",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "column1text",
+        "label": "Column1"
+      }
+    ]
+  },
+  {
+    "id": "table-col-2",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "column1text",
+        "label": "Column1"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "column2text",
+        "label": "Column2"
+      }
+    ]
+  },
+  {
+    "id": "table-col-3",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "column1text",
+        "label": "Column1"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "column2text",
+        "label": "Column2"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "column3text",
+        "label": "Column3"
+      }
+    ]
+  },
+  {
+    "id": "table-col-4",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "column1text",
+        "label": "Column1"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "column2text",
+        "label": "Column2"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "column3text",
+        "label": "Column3"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "column4text",
+        "label": "Column4"
+      }
+    ]
+  },
+  {
     "id": "teaser",
     "fields": [
       {
@@ -514,6 +736,23 @@
           }
         ],
         "value": "default"
+      }
+    ]
+  },
+  {
+    "id": "video",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "video",
+        "label": "Video",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "video_description",
+        "label": "Video Description",
+        "valueType": "string"
       }
     ]
   }
