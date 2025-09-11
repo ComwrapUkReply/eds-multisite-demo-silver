@@ -16,7 +16,7 @@ import { getAemAuthorEnv } from '../../scripts/configs.js';
 
 /**
  * Checks and adjusts hero level 4 layout based on content height
- * @param {Element} block the Hero block element
+ * @param {Element} block the Hero-banner block element
  */
 function adjustHeroLevel4Layout(block) {
   if (!block.classList.contains('hero-level_4')) {
@@ -91,8 +91,8 @@ const buttonTemplate = (props) => (getAemAuthorEnv()
   : getButtonAsJsonString(props));
 
 /**
- * Loads and decorates the Hero
- * @param {Element} block the Hero block element
+ * Loads and decorates the Hero-banner block element
+ * @param {Element} block the Hero-banner block element
  */
 export default function decorate(block) {
   const blockWrappers = [...block.children];
