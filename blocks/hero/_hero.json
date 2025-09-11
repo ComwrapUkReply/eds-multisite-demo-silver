@@ -44,7 +44,9 @@
         {
           "component": "select",
           "name": "classes",
-          "label": "Background",
+          "value": "",
+          "label": "Options",
+          "valueType": "string",
           "options": [
             {
               "name": "Background",
