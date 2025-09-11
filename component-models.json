@@ -270,7 +270,7 @@
       },
       {
         "component": "select",
-        "name": "classes_background",
+        "name": "classes",
         "label": "Background",
         "options": [
           {
