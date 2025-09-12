@@ -524,6 +524,74 @@
     ]
   },
   {
+    "id": "profile-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Profile Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt Text",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "authorName",
+        "label": "Author Name",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "authorPrefix",
+        "label": "Author Prefix",
+        "value": "Autor: "
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "authorTitle",
+        "label": "Author Title/Position",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "authorBio",
+        "label": "Author Bio",
+        "value": ""
+      },
+      {
+        "component": "select",
+        "name": "classes",
+        "label": "Layout Variant",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Default (Horizontal)",
+            "value": "default"
+          },
+          {
+            "name": "Vertical",
+            "value": "vertical"
+          },
+          {
+            "name": "Compact",
+            "value": "compact"
+          }
+        ],
+        "value": "default"
+      }
+    ]
+  },
+  {
     "id": "quote",
     "fields": [
       {

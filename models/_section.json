@@ -64,7 +64,8 @@
         "table",
         "video",
         "accordion",
-        "profile"
+        "profile",
+        "profiles-container"
       ]
     }
   ]
