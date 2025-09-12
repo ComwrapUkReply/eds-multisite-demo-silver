@@ -50,7 +50,7 @@
         },
         {
           "component": "select",
-          "name": "variant",
+          "name": "classes",
           "label": "Layout Variant",
           "valueType": "string",
           "options": [
