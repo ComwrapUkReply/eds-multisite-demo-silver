@@ -1,0 +1,347 @@
+/* Profile Component Styles - Figma Design Match */
+
+/* Main profile block container */
+.profile-container {
+  margin: 1rem 0;
+}
+
+.profile-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  transition: none;
+  height: auto;
+}
+
+.profile-wrapper:focus {
+  outline: 2px solid #0063be;
+  outline-offset: 2px;
+}
+
+/* Image container - Figma specs: 60px circular image */
+.profile-image {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+}
+
+.profile-image picture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  transition: none;
+}
+
+/* Content container */
+.profile-content {
+  padding: 0;
+  flex-grow: 1;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 60px;
+}
+
+/* Author text styling - Figma specs: Open Sans Regular, 18px */
+.profile-author {
+  display: flex;
+  align-items: center;
+  line-height: 28px;
+  white-space: nowrap;
+}
+
+/* Author prefix styling - Figma specs: #4f4f4f */
+.profile-author-prefix {
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #4f4f4f;
+  margin-right: 0;
+  font-variation-settings: 'wdth' 100;
+}
+
+/* Author name styling - Figma specs: #a91a2d with underline */
+.profile-author-name {
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #a91a2d;
+  text-decoration: underline;
+  text-underline-position: from-font;
+  text-decoration-style: solid;
+  font-variation-settings: 'wdth' 100;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.profile-author-name:hover {
+  color: #8a1525;
+  text-decoration: underline;
+}
+
+.profile-author-name:focus {
+  outline: 2px solid #a91a2d;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Layout variants */
+
+/* Default (Horizontal) - matches Figma design */
+.profile-wrapper.profile-default,
+.profile-wrapper.profile-horizontal {
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+.profile-wrapper.profile-default .profile-image,
+.profile-wrapper.profile-horizontal .profile-image {
+  width: 60px;
+  height: 60px;
+}
+
+.profile-wrapper.profile-default .profile-content,
+.profile-wrapper.profile-horizontal .profile-content {
+  min-height: 60px;
+  justify-content: center;
+}
+
+/* Vertical variant */
+.profile-wrapper.profile-vertical {
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+}
+
+.profile-wrapper.profile-vertical .profile-image {
+  width: 80px;
+  height: 80px;
+}
+
+  .profile-wrapper.profile-vertical .profile-content {
+    min-height: 0;
+    justify-content: center;
+  }
+
+.profile-wrapper.profile-vertical .profile-author {
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Compact variant - smaller but keeps proportions */
+.profile-wrapper.profile-compact {
+  gap: 12px;
+  align-items: center;
+}
+
+.profile-wrapper.profile-compact .profile-image {
+  width: 40px;
+  height: 40px;
+}
+
+.profile-wrapper.profile-compact .profile-content {
+  min-height: 40px;
+}
+
+.profile-wrapper.profile-compact .profile-author-prefix,
+.profile-wrapper.profile-compact .profile-author-name {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* Mobile-first responsive design */
+@media (width <= 767px) {
+  .profile-wrapper {
+    flex-direction: row !important;
+    gap: 16px !important;
+    margin: 0 1rem;
+  }
+  
+  .profile-image {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  
+  .profile-content {
+    min-height: 50px !important;
+  }
+  
+  .profile-author-prefix,
+  .profile-author-name {
+    font-size: 16px !important;
+    line-height: 24px !important;
+  }
+  
+  /* Vertical variant on mobile */
+  .profile-wrapper.profile-vertical {
+    flex-direction: column !important;
+    gap: 8px !important;
+    text-align: center;
+  }
+  
+  .profile-wrapper.profile-vertical .profile-image {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .profile-wrapper.profile-vertical .profile-author {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  /* Compact variant on mobile */
+  .profile-wrapper.profile-compact .profile-image {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .profile-wrapper.profile-compact .profile-author-prefix,
+  .profile-wrapper.profile-compact .profile-author-name {
+    font-size: 14px !important;
+    line-height: 20px !important;
+  }
+}
+
+/* Tablet breakpoint */
+@media (width >= 768px) and (width <= 1023px) {
+  .profile-wrapper {
+    gap: 18px;
+  }
+  
+  .profile-image {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .profile-content {
+    min-height: 55px;
+  }
+  
+  .profile-author-prefix,
+  .profile-author-name {
+    font-size: 17px;
+    line-height: 26px;
+  }
+  
+  .profile-wrapper.profile-vertical .profile-image {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .profile-wrapper.profile-compact .profile-image {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .profile-wrapper.profile-compact .profile-content {
+    min-height: 45px;
+  }
+}
+
+/* Desktop and above - use exact Figma specifications */
+@media (width >= 1024px) {
+  .profile-wrapper {
+    gap: 20px;
+  }
+  
+  .profile-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .profile-content {
+    min-height: 60px;
+  }
+  
+  .profile-author-prefix,
+  .profile-author-name {
+    font-size: 18px;
+    line-height: 28px;
+  }
+  
+  .profile-wrapper.profile-vertical .profile-image {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .profile-wrapper.profile-compact .profile-image {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .profile-wrapper.profile-compact .profile-content {
+    min-height: 40px;
+  }
+  
+  .profile-wrapper.profile-compact .profile-author-prefix,
+  .profile-wrapper.profile-compact .profile-author-name {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .profile-wrapper,
+  .profile-author-name {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  .profile-wrapper {
+    border: 2px solid var(--text-color, #333);
+    box-shadow: none;
+  }
+  
+  .profile-author-name {
+    border: 1px solid var(--text-color, #333);
+    padding: 2px 4px;
+    border-radius: 2px;
+  }
+}
+
+/* Focus management for keyboard navigation */
+.profile-wrapper[tabindex]:focus {
+  outline: 2px solid #0063be;
+  outline-offset: 2px;
+}
+
+.profile-wrapper[tabindex]:focus .profile-author-name {
+  outline: none;
+}
+
+/* Print styles */
+@media print {
+  .profile-wrapper {
+    break-inside: avoid;
+  }
+  
+  .profile-author-name {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+}

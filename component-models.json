@@ -470,6 +470,60 @@
     ]
   },
   {
+    "id": "profile",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Profile Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt Text",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "authorName",
+        "label": "Author Name",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "authorPrefix",
+        "label": "Author Prefix",
+        "value": "Autor: "
+      },
+      {
+        "component": "select",
+        "name": "variant",
+        "label": "Layout Variant",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Default (Horizontal)",
+            "value": "default"
+          },
+          {
+            "name": "Vertical",
+            "value": "vertical"
+          },
+          {
+            "name": "Compact",
+            "value": "compact"
+          }
+        ],
+        "value": "default"
+      }
+    ]
+  },
+  {
     "id": "quote",
     "fields": [
       {
