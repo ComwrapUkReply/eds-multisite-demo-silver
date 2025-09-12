@@ -25,7 +25,8 @@
       "table",
       "video",
       "accordion",
-      "profile"
+      "profile",
+      "profile-list"
     ]
   },
   {
@@ -53,6 +54,12 @@
       "image",
       "button",
       "title"
+    ]
+  },
+  {
+    "id": "profile-list",
+    "components": [
+      "profile-item"
     ]
   },
   {
