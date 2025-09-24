@@ -51,7 +51,7 @@ jobs:
               found = set(key_re.findall(msg))
               if not found: 
                   continue
-              line = f"- {msg.replace(os.linesep,' ')}\n  Commit: {url}"
+              line = f"- {msg.replace(os.linesep,' ')}\n  Commit: [{c['id'][:8]}|{url}]"
               for key in found:
                   by_issue.setdefault(key, []).append(line)
 
