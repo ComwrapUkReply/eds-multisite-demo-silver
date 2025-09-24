@@ -72,4 +72,54 @@
         --footer-text-color: #040053;
         --footer-link-color: #040053;
         --footer-link-hover-color: #040053;
+
+
+        /* button colors */
+        --button-background-color: #040053;
+        --button-text-color: #040053;
+        --button-hover-color: #040053;
+        --button-border-color: #040053;
+        --button-border-hover-color: #040053;
+        --button-border-active-color: #040053;
+        --button-border-active-hover-color: #040053;
+
+        /* input colors */
+        --input-background-color: #040053;
+        --input-text-color: #040053;
+        --input-border-color: #040053;
+        --input-border-hover-color: #040053;
+        --input-border-active-color: #040053;
+        --input-border-active-hover-color: #040053;
+
+        /* select colors */
+        --select-background-color: #040053;
+        --select-text-color: #040053;
+        --select-border-color: #040053;
+        --select-border-hover-color: #040053;
+        --select-border-active-color: #040053;
+        --select-border-active-hover-color: #040053;
+
+        /* textarea colors */
+        --textarea-background-color: #040053;
+        --textarea-text-color: #040053;
+        --textarea-border-color: #040053;
+        --textarea-border-hover-color: #040053;
+        --textarea-border-active-color: #040053;
+        --textarea-border-active-hover-color: #040053;
+
+        /* checkbox colors */
+        --checkbox-background-color: #040053;
+        --checkbox-text-color: #040053;
+        --checkbox-border-color: #040053;
+        --checkbox-border-hover-color: #040053;
+        --checkbox-border-active-color: #040053;
+        --checkbox-border-active-hover-color: #040053;
+
+        /* radio colors */
+        --radio-background-color: #040053;
+        --radio-text-color: #040053;
+        --radio-border-color: #040053;
+        --radio-border-hover-color: #040053;
+        --radio-border-active-color: #040053;
+        --radio-border-active-hover-color: #040053;
 }
