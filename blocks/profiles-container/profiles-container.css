@@ -1,0 +1,178 @@
+/* Profiles Container Block Styling */
+
+/* Based on Figma design with horizontal profile layout */
+
+.profiles-container > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 24px;
+}
+
+.profiles-container > ul > li {
+  background: var(--background-color);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profiles-container > ul > li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
+}
+
+/* Profile item layout - horizontal as per Figma design */
+.profiles-container .profiles-container-profile-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+/* Profile image styling */
+.profiles-container .profiles-container-profile-image {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+.profiles-container .profiles-container-profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Profile content styling */
+.profiles-container .profiles-container-profile-content {
+  flex: 1;
+  min-width: 0; /* Prevents flex item from overflowing */
+}
+
+/* Author name styling based on Figma design */
+.profiles-container .profiles-container-author-name {
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-s);
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 0;
+  color: var(--text-color);
+}
+
+/* Author prefix styling */
+.profiles-container .profiles-container-author-prefix {
+  color: var(--dark-color);
+  font-weight: 400;
+}
+
+/* Author name link styling */
+.profiles-container .profiles-container-author-name a {
+  color: #a91a2d; /* Figma design color */
+  text-decoration: underline;
+  text-underline-position: from-font;
+  transition: color 0.3s ease;
+}
+
+.profiles-container .profiles-container-author-name a:hover {
+  color: var(--link-hover-color);
+  text-decoration: none;
+}
+
+/* Author title styling */
+.profiles-container .profiles-container-author-title {
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  color: var(--dark-color);
+  margin: 4px 0 0;
+  font-weight: 400;
+}
+
+/* Author bio styling */
+.profiles-container .profiles-container-author-bio {
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  color: var(--text-color);
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+/* Responsive design */
+@media (width <= 768px) {
+  .profiles-container > ul {
+    grid-template-columns: 1fr;
+    grid-gap: 16px;
+  }
+  
+  .profiles-container > ul > li {
+    padding: 12px;
+  }
+  
+  .profiles-container .profiles-container-profile-item {
+    gap: 12px;
+  }
+  
+  .profiles-container .profiles-container-profile-image {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .profiles-container .profiles-container-author-name {
+    font-size: var(--body-font-size-xs);
+  }
+}
+
+/* Block options styling */
+.profiles-container.compact > ul > li {
+  padding: 12px;
+}
+
+.profiles-container.compact .profiles-container-profile-image {
+  width: 50px;
+  height: 50px;
+}
+
+.profiles-container.vertical .profiles-container-profile-item {
+  flex-direction: column;
+  text-align: center;
+  gap: 12px;
+}
+
+.profiles-container.vertical .profiles-container-profile-image {
+  width: 80px;
+  height: 80px;
+}
+
+/* Accessibility improvements */
+.profiles-container .profiles-container-author-name a:focus {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  .profiles-container > ul > li {
+    border: 2px solid var(--text-color);
+  }
+  
+  .profiles-container .profiles-container-author-name a {
+    color: var(--link-color);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .profiles-container > ul > li {
+    transition: none;
+  }
+  
+  .profiles-container > ul > li:hover {
+    transform: none;
+  }
+}

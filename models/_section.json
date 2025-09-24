@@ -33,6 +33,10 @@
             {
               "name": "Highlight",
               "value": "highlight"
+            },
+            {
+              "name": "Default",
+              "value": ""
             }
           ]
         }
@@ -52,7 +56,16 @@
         "columns",
         "fragment",
         "language-switcher",
-        "quote"
+        "quote",
+        "teaser",
+        "breadcrumbs",
+        "quote",
+        "download",
+        "table",
+        "video",
+        "accordion",
+        "profile",
+        "profiles-container"
       ]
     }
   ]

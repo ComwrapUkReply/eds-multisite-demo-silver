@@ -33,6 +33,21 @@
           "name": "rows",
           "value": "",
           "label": "Rows"
+        },
+        {
+          "component": "select",
+          "name": "classes",
+          "value": "",
+          "label": "Styles",
+          "description": "The styles of the columns",
+          "valueType": "string",
+          "options": [
+            {"name": "Default", "value": ""},
+            {"name": "Card Style", "value": "card"},
+            {"name": "Bordered", "value": "bordered"},
+            {"name": "Highlighted", "value": "highlighted"},
+            {"name": "Minimal", "value": "minimal"}
+          ]
         }
       ]
     }

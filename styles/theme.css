@@ -29,7 +29,7 @@
     --nav-height: 64px;
 
         /* Header colors */
-        --background-color-header: #fff;
+        --background-color-header: var(--background-color);
         --text-navigation-link-size: 18px;
         --text-color-navigation-link: #040053;
         --text-color-navigation-link-hover: #040053;
@@ -56,4 +56,14 @@
         --hero-text-color: #040053;
         --hero-button-color: #040053;
         --hero-button-hover-color: #040053;
+
+        /* card colors */
+        --card-background-color: pink;
+
+        /* profile colors */
+        --profile-background-color: #fff;
+        --profile-author-prefix-color: #040053;
+        --profile-author-name-color: #040053;
+        --profile-link-color: #040053;
+        --profile-link-hover-color: #040053;
 }
