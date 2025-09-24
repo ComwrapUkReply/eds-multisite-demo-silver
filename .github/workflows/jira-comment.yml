@@ -97,14 +97,16 @@ jobs:
               
               # 4. Check for demo page link (look for common patterns)
               demo_patterns = [
-                  r'demo[:\s]+([^\s]+)',
-                  r'preview[:\s]+([^\s]+)',
-                  r'live[:\s]+([^\s]+)'
+                  r'demo[:\s]+([^\s"\'<>]+)',
+                  r'preview[:\s]+([^\s"\'<>]+)',
+                  r'live[:\s]+([^\s"\'<>]+)'
               ]
               for pattern in demo_patterns:
                   demo_match = re.search(pattern, msg, re.IGNORECASE)
                   if demo_match:
                       demo_url = demo_match.group(1)
+                      # Clean up any trailing punctuation
+                      demo_url = demo_url.rstrip('.,;:!?"\'/)')
                       if not demo_url.startswith('http'):
                           demo_url = f"https://{demo_url}"
                       content.append(create_adf_text("Demo Page: "))
