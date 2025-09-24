@@ -15,9 +15,9 @@ jobs:
       - name: Extract commits JSON
         id: commits
         run: |
-          cat << 'EOF' >> $GITHUB_OUTPUT
-          commits=${{ toJson(github.event.commits) }}
-          EOF
+          echo 'commits<<EOF' >> $GITHUB_OUTPUT
+          echo '${{ toJson(github.event.commits) }}' >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
 
       - name: Build Jira comments per issue
         id: build
