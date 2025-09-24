@@ -3,10 +3,10 @@
     --background-color: white;
     --light-color: #f8f8f8;
     --dark-color: #505050;
-    --text-color: black;
-    --link-color: #1071b0;
-    --link-hover-color: #1071b0;
-    --header-background: #1071b0;
+    --text-color: #c30010;
+    --link-color: #c30010;
+    --link-hover-color: #c30010;
+    --header-background: #c30010;
 
     /* fonts */
     --body-font-family: roboto, roboto-fallback, sans-serif;
@@ -28,50 +28,42 @@
     /* nav height */
     --nav-height: 64px;
 
-        /* Header colors */
-        --background-color-header: var(--background-color);
-        --text-navigation-link-size: 18px;
-        --text-color-navigation-link: #040053;
-        --text-color-navigation-link-hover: #040053;
-        --text-color-navigation-link-active: #040053;
-        --background-color-navigation-link-active-hover: #040053;
-        --background-color-navigation-link-hover: #040053;
-        --background-color-navigation-link-active: #040053;
-        --background-color-submenu: #040053;
-        --text-color-submenu: #040053;
-        --text-color-submenu-hover: #040053;
-        --text-color-submenu-active: #040053;
-        --text-color-submenu-active-hover: #040053;
-        --search-icon-text-color: #0063BE;
-        --search-modal-background-color: #040053;
-        --search-modal-text-color: #040053;
-        --search-modal-close-color: #040053;
-        --search-modal-border-color: #040053;
-        --language-navigation-text-color: #040053   ;
-    
-        /* hero colors */
-        --hero-background-color: linear-gradient(200deg,#0352fc, #0063BE); 
-        --hero-background-color-mobile: linear-gradient(200deg,#0352fc, #0063BE); 
-        --hero-background-color-no-image: #fff;
-        --hero-text-color: #040053;
-        --hero-button-color: #040053;
-        --hero-button-hover-color: #040053;
+    /* Header colors */
+    --background-color-header: red;
+    --text-navigation-link-size: 18px;
+    --text-color-navigation-link: #0063BE;
+    --text-color-navigation-link-hover: #000;
+    --text-color-navigation-link-active: #000;
+    --background-color-navigation-link-active-hover: #000;
+    --background-color-navigation-link-hover: #000;
+    --background-color-navigation-link-active: #fff;
+    --background-color-submenu: #fff;
+    --text-color-submenu: #000;
+    --text-color-submenu-hover: #000;
+    --text-color-submenu-active: #000;
+    --text-color-submenu-active-hover: #000;
+    --search-icon-text-color: #0063BE;
+    --search-modal-background-color: #0063BE;
+    --search-modal-text-color: #fff;
+    --search-modal-close-color: #fff;
+    --search-modal-border-color: #fff;
+    --language-navigation-text-color: #000;
 
-        /* card colors */
-        --card-background-color: pink;
+    /* hero colors */
+    --hero-background-color: linear-gradient(200deg,#0c2863, gold); 
+    --hero-background-color-mobile: #0004ee;
+    --hero-background-color-no-image: #0004ee;
+    --hero-text-color: #fff;
+    --hero-button-color: #fff;
+    --hero-button-hover-color: #fff;
 
-        /* profile colors */
-        --profile-background-color: #fff;
-        --profile-author-prefix-color: #040053;
-        --profile-author-name-color: #040053;
-        --profile-link-color: #040053;
-        --profile-link-hover-color: #040053;
+    /* card colors */
+    --card-background-color: silver;
 
-        /* footer colors */
-        --footer-background-color: white;
-        --footer-text-color: black;
-        --footer-link-color: blue;
-        --footer-link-hover-color: blue;
-        --footer-link-active-color: blue;
-        --footer-link-active-hover-color: blue;
+    /* profile colors */
+    --profile-background-color: #fff;
+    --profile-author-prefix-color: #040053;
+    --profile-author-name-color: #040053;
+    --profile-link-color: #040053;
+    --profile-link-hover-color: #040053;
 }
