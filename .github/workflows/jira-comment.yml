@@ -15,7 +15,8 @@ jobs:
       - name: Extract commits JSON
         id: commits
         run: |
-          echo "commits=${{ toJson(github.event.commits) }}" >> $GITHUB_OUTPUT
+          COMMITS='${{ toJson(github.event.commits) }}'
+          echo "commits=${COMMITS}" >> $GITHUB_OUTPUT
 
       - name: Build Jira comments per issue
         id: build
