@@ -1,0 +1,447 @@
+---
+description: Task manager for AI agents developing EDS Universal Editor blocks
+globs:
+alwaysApply: false
+---
+
+# EDS Universal Editor Block Development Task Manager
+
+## Overview
+
+This task manager provides a structured approach for AI agents to develop blocks in Adobe Experience Manager (AEM) Edge Delivery Services using the Universal Editor. It follows the three-phase development approach and ensures consistent, high-quality block implementations.
+
+## Pre-Development Phase: Requirements Gathering
+
+### Step 1: Block Requirements Analysis
+Before starting development, the AI agent **MUST** ask these clarifying questions:
+
+#### Core Block Purpose
+- What is the primary purpose of this block?
+- What problem does it solve for content authors?
+- How will this block be used across different pages/contexts?
+
+#### Content Structure
+- What content fields should this block have?
+- What types of content will authors need to input? (text, images, links, rich text, etc.)
+- Are there any repeating content patterns or child items?
+- Should this be a simple block, container block, or key-value block?
+
+#### Visual Design & Behavior
+- Are there specific design requirements or mockups?
+- What visual variants or styling options should be available?
+- Should the block have interactive features (hover effects, animations, etc.)?
+- What responsive behavior is expected across different screen sizes?
+
+#### Block Options & Variants
+- What styling variants should authors be able to choose from?
+- Are there layout options (centered, full-width, side-by-side, etc.)?
+- Should there be theme variations (light, dark, highlighted, etc.)?
+
+#### Technical Requirements
+- Does this block need JavaScript functionality?
+- Are there any accessibility requirements?
+- Should it integrate with analytics or tracking?
+- Are there performance considerations?
+
+### Step 2: Create Block PRD
+Based on the answers, create a Product Requirements Document using this structure:
+
+```markdown
+# Block PRD: [Block Name]
+
+## Overview
+Brief description of the block and its purpose.
+
+## Goals
+- Specific, measurable objectives for this block
+
+## User Stories
+- As a content author, I want to [action] so that [benefit]
+- As a site visitor, I want to [action] so that [benefit]
+
+## Content Model Requirements
+1. List all required fields
+2. Specify field types (text, richtext, reference, select, multiselect)
+3. Define default values and validation rules
+
+## Block Options & Variants
+- List all styling variants
+- Define block option categories and values
+
+## Functional Requirements
+1. Numbered list of specific functionalities
+2. Include responsive behavior requirements
+3. Specify interactive features if any
+
+## Technical Considerations
+- JavaScript requirements
+- CSS requirements
+- Performance constraints
+- Accessibility requirements
+
+## Success Metrics
+How will success be measured?
+
+## Open Questions
+Any remaining questions or clarifications needed
+```
+
+## Phase 1: Block Definition & Model Creation
+
+### Task 1.1: Analyze Existing Block Structure
+- [ ] Examine existing blocks in the project for patterns
+- [ ] Review component-models.json for field type examples
+- [ ] Check component-filters.json for container relationships
+- [ ] Study component-definition.json for registration patterns
+
+### Task 1.2: Create Block JSON Definition
+Create `blocks/[block-name]/_[block-name].json` with:
+
+```json
+{
+  "definitions": [
+    {
+      "title": "[Display Name]",
+      "id": "[block-id]",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "[Block Name]",
+              "model": "[model-id]"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "[model-id]",
+      "fields": [
+        // Field definitions based on requirements
+      ]
+    }
+  ],
+  "filters": []
+}
+```
+
+### Task 1.3: Field Configuration
+For each content field, determine:
+- [ ] Field component type (text, richtext, reference, select, multiselect, aem-content)
+- [ ] Field name (semantic and consistent)
+- [ ] Field label (author-friendly)
+- [ ] Default value
+- [ ] Validation requirements
+
+### Task 1.4: Block Options Configuration
+If block variants are needed:
+- [ ] Configure `classes` field with multiselect component
+- [ ] Organize options into logical groups
+- [ ] Define meaningful option values
+- [ ] Set appropriate default selections
+
+### Task 1.5: Container Configuration (if applicable)
+For container blocks:
+- [ ] Define child component models
+- [ ] Create filter definitions
+- [ ] Configure component relationships
+
+### Task 1.6: Build and Test JSON
+- [ ] Run `npm run build:json` to generate configuration files
+- [ ] Verify no build errors
+- [ ] Check generated files for accuracy
+
+## Phase 2: Content Creation & Testing
+
+### Task 2.1: Universal Editor Testing
+- [ ] Open Universal Editor
+- [ ] Locate new block in component library
+- [ ] Add block to test page
+- [ ] Configure all content fields
+- [ ] Test all block options/variants
+- [ ] Verify content saves correctly
+
+### Task 2.2: Content Structure Validation
+- [ ] Inspect generated HTML structure in browser
+- [ ] Document DOM hierarchy for JavaScript development
+- [ ] Identify any content model adjustments needed
+- [ ] Test with minimal and maximum content scenarios
+
+### Task 2.3: Responsive Testing
+- [ ] Test block on mobile devices
+- [ ] Verify content flows correctly
+- [ ] Check image handling across breakpoints
+- [ ] Validate text readability
+
+## Phase 3: Implementation & Styling
+
+### Task 3.1: Create Block Files
+Create the following files in `blocks/[block-name]/`:
+- [ ] `[block-name].js` - JavaScript functionality
+- [ ] `[block-name].css` - Block styling
+- [ ] `index.js` - Export file (if needed)
+- [ ] `README.md` - Documentation
+
+### Task 3.2: JavaScript Implementation
+
+#### Basic Structure Setup
+```javascript
+/**
+ * [Block Name] implementation
+ * [Brief description of functionality]
+ */
+
+export default function decorate(block) {
+  // Add semantic CSS classes
+  addSemanticClasses(block);
+  
+  // Process special content patterns
+  processContent(block);
+  
+  // Add interactive features (if needed)
+  addEventListeners(block);
+  
+  // Add accessibility features
+  addAccessibilityFeatures(block);
+}
+```
+
+#### Implementation Checklist
+- [ ] Add semantic CSS classes to DOM elements
+- [ ] Process images with proper attributes
+- [ ] Handle text content and headings
+- [ ] Process links and buttons
+- [ ] Implement block options detection
+- [ ] Add interactive features (if required)
+- [ ] Implement accessibility enhancements
+- [ ] Add performance optimizations
+- [ ] Include error handling
+
+### Task 3.3: CSS Implementation
+
+#### CSS Structure
+```css
+/* Block container - scoped to avoid conflicts */
+.block.[block-name] {
+  /* Base block styles using theme variables */
+}
+
+/* Block options/variants */
+.block.[block-name].[option-class] {
+  /* Variant-specific styles */
+}
+
+/* Block elements */
+.block.[block-name] .[element-class] {
+  /* Element-specific styles */
+}
+
+/* Responsive design */
+@media (min-width: 768px) {
+  .block.[block-name] {
+    /* Tablet/desktop styles */
+  }
+}
+```
+
+#### CSS Implementation Checklist
+- [ ] Use theme variables for all colors and typography
+- [ ] Scope all selectors to `.block.[block-name]`
+- [ ] Implement mobile-first responsive design
+- [ ] Style all block variants/options
+- [ ] Add hover and focus states
+- [ ] Include smooth transitions and animations
+- [ ] Implement accessibility styles (high contrast, reduced motion)
+- [ ] Optimize for performance
+
+### Task 3.4: Block Options Styling
+For each block option:
+- [ ] Create CSS rules for option classes
+- [ ] Test option combinations
+- [ ] Ensure proper cascading
+- [ ] Validate responsive behavior
+
+### Task 3.5: Accessibility Implementation
+- [ ] Add proper ARIA labels
+- [ ] Ensure keyboard navigation
+- [ ] Test with screen readers
+- [ ] Implement focus management
+- [ ] Add skip links if needed
+- [ ] Test high contrast mode
+- [ ] Validate color contrast ratios
+
+## Phase 4: Testing & Quality Assurance
+
+### Task 4.1: Functional Testing
+- [ ] Test block in Universal Editor
+- [ ] Verify all content fields work correctly
+- [ ] Test all block options/variants
+- [ ] Validate responsive behavior
+- [ ] Check cross-browser compatibility
+
+### Task 4.2: Performance Testing
+- [ ] Run Lighthouse audit
+- [ ] Check Core Web Vitals
+- [ ] Validate image optimization
+- [ ] Test loading performance
+- [ ] Monitor bundle size impact
+
+### Task 4.3: Accessibility Testing
+- [ ] Run automated accessibility tests
+- [ ] Test keyboard navigation
+- [ ] Validate screen reader compatibility
+- [ ] Check color contrast
+- [ ] Test with assistive technologies
+
+### Task 4.4: Content Testing
+- [ ] Test with minimal content
+- [ ] Test with maximum content
+- [ ] Test edge cases (empty fields, long text, etc.)
+- [ ] Validate graceful degradation
+- [ ] Test content overflow scenarios
+
+## Phase 5: Documentation & Deployment
+
+### Task 5.1: Create Block Documentation
+Create comprehensive `README.md` with:
+- [ ] Block purpose and use cases
+- [ ] Content field descriptions
+- [ ] Block options documentation
+- [ ] Implementation examples
+- [ ] Troubleshooting guide
+
+### Task 5.2: Code Quality Review
+- [ ] Follow Airbnb style guide
+- [ ] Use defensive coding practices
+- [ ] Add comprehensive comments
+- [ ] Validate ESLint compliance
+- [ ] Review for maintainability
+
+### Task 5.3: Final Validation
+- [ ] Test complete user workflow
+- [ ] Validate Universal Editor integration
+- [ ] Check published page output
+- [ ] Verify multisite compatibility (if applicable)
+- [ ] Test theme integration
+
+### Task 5.4: Deployment
+- [ ] Commit changes with descriptive messages
+- [ ] Create feature branch for testing
+- [ ] Test in staging environment
+- [ ] Merge to main branch
+- [ ] Monitor for issues post-deployment
+
+## Common Patterns & Templates
+
+### Field Type Templates
+
+#### Text Field
+```json
+{
+  "component": "text",
+  "name": "fieldName",
+  "label": "Field Label",
+  "valueType": "string",
+  "value": ""
+}
+```
+
+#### Rich Text Field
+```json
+{
+  "component": "richtext",
+  "name": "description",
+  "label": "Description",
+  "valueType": "string",
+  "value": ""
+}
+```
+
+#### Image Reference
+```json
+{
+  "component": "reference",
+  "name": "image",
+  "label": "Image",
+  "valueType": "string",
+  "multi": false
+}
+```
+
+#### Block Options
+```json
+{
+  "component": "multiselect",
+  "name": "classes",
+  "label": "Block Options",
+  "valueType": "string",
+  "options": [
+    {
+      "name": "Layout",
+      "children": [
+        {"name": "Default", "value": ""},
+        {"name": "Centered", "value": "centered"},
+        {"name": "Full Width", "value": "full-width"}
+      ]
+    },
+    {
+      "name": "Style",
+      "children": [
+        {"name": "Light", "value": "light"},
+        {"name": "Dark", "value": "dark"}
+      ]
+    }
+  ],
+  "value": ""
+}
+```
+
+## Error Handling & Troubleshooting
+
+### Common Issues
+1. **Block not appearing in Universal Editor**
+   - Check JSON syntax
+   - Verify component registration
+   - Ensure proper resource type
+
+2. **Styling not applied**
+   - Verify CSS class naming
+   - Check file naming conventions
+   - Validate CSS scoping
+
+3. **Content not rendering**
+   - Validate field types
+   - Check type inference
+   - Verify content model
+
+### Debugging Checklist
+- [ ] Check browser console for errors
+- [ ] Validate JSON configuration files
+- [ ] Inspect DOM structure
+- [ ] Test with minimal configuration
+- [ ] Review build output
+
+## Success Criteria
+
+A successfully implemented block should:
+- [ ] Render correctly in Universal Editor
+- [ ] Display properly on published pages
+- [ ] Work across all required breakpoints
+- [ ] Meet accessibility standards
+- [ ] Follow project coding standards
+- [ ] Include comprehensive documentation
+- [ ] Pass all quality assurance tests
+
+## Final Notes
+
+- Always follow the three-phase approach
+- Use semantic HTML and CSS
+- Implement proper accessibility features
+- Test thoroughly across different scenarios
+- Document everything for future maintainers
+- Follow project coding standards and conventions
+
+This task manager ensures consistent, high-quality block development while maintaining the standards and patterns established in the EDS Universal Editor project.
