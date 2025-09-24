@@ -45,13 +45,27 @@ jobs:
           key_re = re.compile(r"\b[A-Z][A-Z0-9]+-\d+\b")
           by_issue = {}
           
+          def convert_urls_to_hyperlinks(text):
+              """Convert URLs in text to Jira hyperlink format [text|url]"""
+              import re
+              url_pattern = r'https?://[^\s<>"{}|\\^`\[\]]+'
+              
+              def replace_url(match):
+                  url = match.group(0)
+                  # Use the URL as both display text and link
+                  return f"[{url}|{url}]"
+              
+              return re.sub(url_pattern, replace_url, text)
+          
           for c in commits:
               msg = f"{c['message']}".strip()
+              # Convert any URLs in the commit message to hyperlinks
+              msg_with_links = convert_urls_to_hyperlinks(msg)
               url = c.get('url') or f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/commit/{c['id']}"
               found = set(key_re.findall(msg))
               if not found: 
                   continue
-              line = f"- {msg.replace(os.linesep,' ')}\n  Commit: [{c['id'][:8]}|{url}]"
+              line = f"- {msg_with_links.replace(os.linesep,' ')}\n  Commit: [{c['id'][:8]}|{url}]"
               for key in found:
                   by_issue.setdefault(key, []).append(line)
 
