@@ -75,7 +75,25 @@ jobs:
 
           for p in payloads:
               url = f"{jira}/rest/api/3/issue/{p['key']}/comment"
-              data = json.dumps({"body": p["comment"]}).encode()
+              # Jira Cloud uses Atlassian Document Format (ADF)
+              comment_body = {
+                  "body": {
+                      "type": "doc",
+                      "version": 1,
+                      "content": [
+                          {
+                              "type": "paragraph",
+                              "content": [
+                                  {
+                                      "type": "text",
+                                      "text": p["comment"]
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              }
+              data = json.dumps(comment_body).encode()
               req = urllib.request.Request(url, data=data, headers={
                   "Authorization": f"Basic {b64}",
                   "Accept": "application/json",
