@@ -67,6 +67,47 @@ jobs:
                   "text": text
               }
           
+          def convert_urls_in_text(text):
+              """Convert any URLs in text to ADF hyperlink format"""
+              import re
+              url_pattern = r'https?://[^\s<>"{}|\\^`\[\]]+[^\s<>"{}|\\^`\[\].,;:!?\'")\]]'
+              
+              result = []
+              last_end = 0
+              
+              for match in re.finditer(url_pattern, text):
+                  # Add text before the URL
+                  if match.start() > last_end:
+                      before_text = text[last_end:match.start()]
+                      if before_text:
+                          result.append(create_adf_text(before_text))
+                  
+                  # Add the URL as hyperlink
+                  url = match.group(0)
+                  # Clean up any trailing punctuation that might have been included
+                  url = url.rstrip('.,;:!?"\'/)')
+                  
+                  # Create a shortened display text for long URLs
+                  if len(url) > 60:
+                      display_text = url[:30] + "..." + url[-27:]
+                  else:
+                      display_text = url
+                  
+                  result.append(create_adf_hyperlink(display_text, url))
+                  last_end = match.end()
+              
+              # Add any remaining text after the last URL
+              if last_end < len(text):
+                  remaining_text = text[last_end:]
+                  if remaining_text:
+                      result.append(create_adf_text(remaining_text))
+              
+              # If no URLs were found, return the original text as ADF text
+              if not result:
+                  result.append(create_adf_text(text))
+              
+              return result
+          
           for c in commits:
               msg = f"{c['message']}".strip()
               commit_url = c.get('url') or f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/commit/{c['id']}"
@@ -77,8 +118,9 @@ jobs:
               # Create ADF content with proper hyperlinks
               content = []
               
-              # 1. Commit message
-              content.append(create_adf_text(f"{msg}\n"))
+              # 1. Commit message with auto-converted URLs
+              msg_content = convert_urls_in_text(f"{msg}\n")
+              content.extend(msg_content)
               
               # 2. GitHub commit link
               content.append(create_adf_text("GitHub Commit: "))
