@@ -59,4 +59,11 @@
 
         /* card colors */
         --card-background-color: pink;
+
+        /* profile colors */
+        --profile-background-color: #fff;
+        --profile-author-prefix-color: #040053;
+        --profile-author-name-color: #040053;
+        --profile-link-color: #040053;
+        --profile-link-hover-color: #040053;
 }
