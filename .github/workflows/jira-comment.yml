@@ -1,0 +1,75 @@
+name: Comment commits to Jira
+
+on:
+  push:
+    branches: ["**"]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout (no need to fetch history for this job)
+        uses: actions/checkout@v4
+
+      - name: Extract commits JSON
+        id: commits
+        run: |
+          echo "commits=$(jq -c '.commits' <<< '${{ toJson(github.event.commits) }}')" >> $GITHUB_OUTPUT
+
+      - name: Build Jira comments per issue
+        id: build
+        run: |
+          python3 - << 'PY'
+          import json, re, os
+          
+          commits = json.loads(os.environ["COMMITS"])
+          key_re = re.compile(r"\b[A-Z][A-Z0-9]+-\d+\b")
+          by_issue = {}
+          
+          for c in commits:
+              msg = f"{c['message']}".strip()
+              url = c.get('url') or f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/commit/{c['id']}"
+              found = set(key_re.findall(msg))
+              if not found: 
+                  continue
+              line = f"- {msg.replace(os.linesep,' ')}\n  Commit: {url}"
+              for key in found:
+                  by_issue.setdefault(key, []).append(line)
+
+          payloads = [{"key":k,"comment":"\n".join(v)} for k,v in by_issue.items()]
+          print("::set-output name=payloads::" + json.dumps(payloads))
+          PY
+        env:
+          COMMITS: ${{ steps.commits.outputs.commits }}
+
+      - name: Post comments to Jira
+        if: ${{ steps.build.outputs.payloads != '' }}
+        run: |
+          python3 - << 'PY'
+          import json, os, base64, urllib.request
+          
+          payloads = json.loads(os.environ["PAYLOADS"])
+          jira = os.environ["JIRA_BASE_URL"].rstrip("/")
+          auth = (os.environ["JIRA_EMAIL"] + ":" + os.environ["JIRA_API_TOKEN"]).encode()
+          b64 = base64.b64encode(auth).decode()
+
+          for p in payloads:
+              url = f"{jira}/rest/api/3/issue/{p['key']}/comment"
+              data = json.dumps({"body": p["comment"]}).encode()
+              req = urllib.request.Request(url, data=data, headers={
+                  "Authorization": f"Basic {b64}",
+                  "Accept": "application/json",
+                  "Content-Type": "application/json"
+              })
+              try:
+                  with urllib.request.urlopen(req) as resp:
+                      print(p["key"], "->", resp.status)
+              except Exception as e:
+                  print("Failed", p["key"], e)
+          PY
+        env:
+          PAYLOADS: ${{ steps.build.outputs.payloads }}
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
