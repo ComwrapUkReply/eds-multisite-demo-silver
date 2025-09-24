@@ -69,9 +69,9 @@
 
         /* footer colors */
         --footer-background-color: white;
-        --footer-text-color: #040053;
-        --footer-link-color: #040053;
-        --footer-link-hover-color: #040053;
-        --footer-link-active-color: #040053;
-        --footer-link-active-hover-color: #040053;
+        --footer-text-color: black;
+        --footer-link-color: blue;
+        --footer-link-hover-color: blue;
+        --footer-link-active-color: blue;
+        --footer-link-active-hover-color: blue;
 }
