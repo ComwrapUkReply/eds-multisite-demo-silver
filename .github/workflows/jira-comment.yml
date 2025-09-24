@@ -45,17 +45,93 @@ jobs:
           key_re = re.compile(r"\b[A-Z][A-Z0-9]+-\d+\b")
           by_issue = {}
           
+          def create_adf_hyperlink(text, url):
+              """Create ADF hyperlink structure"""
+              return {
+                  "type": "text",
+                  "text": text,
+                  "marks": [
+                      {
+                          "type": "link",
+                          "attrs": {
+                              "href": url
+                          }
+                      }
+                  ]
+              }
+          
+          def create_adf_text(text):
+              """Create plain ADF text"""
+              return {
+                  "type": "text",
+                  "text": text
+              }
+          
           for c in commits:
               msg = f"{c['message']}".strip()
-              url = c.get('url') or f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/commit/{c['id']}"
+              commit_url = c.get('url') or f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/commit/{c['id']}"
               found = set(key_re.findall(msg))
               if not found: 
                   continue
-              line = f"- {msg.replace(os.linesep,' ')}\n  Commit: [{c['id'][:8]}|{url}]"
+              
+              # Create ADF content with proper hyperlinks
+              content = []
+              
+              # 1. Commit message
+              content.append(create_adf_text(f"{msg}\n"))
+              
+              # 2. GitHub commit link
+              content.append(create_adf_text("GitHub Commit: "))
+              content.append(create_adf_hyperlink(c['id'][:8], commit_url))
+              content.append(create_adf_text("\n"))
+              
+              # 3. Check for PR/MR link in commit message
+              pr_pattern = r'#(\d+)'
+              pr_match = re.search(pr_pattern, msg)
+              if pr_match:
+                  pr_number = pr_match.group(1)
+                  pr_url = f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/pull/{pr_number}"
+                  content.append(create_adf_text("Pull Request: "))
+                  content.append(create_adf_hyperlink(f"#{pr_number}", pr_url))
+                  content.append(create_adf_text("\n"))
+              
+              # 4. Check for demo page link (look for common patterns)
+              demo_patterns = [
+                  r'demo[:\s]+([^\s"\'<>]+)',
+                  r'preview[:\s]+([^\s"\'<>]+)',
+                  r'live[:\s]+([^\s"\'<>]+)'
+              ]
+              for pattern in demo_patterns:
+                  demo_match = re.search(pattern, msg, re.IGNORECASE)
+                  if demo_match:
+                      demo_url = demo_match.group(1)
+                      # Clean up any trailing punctuation
+                      demo_url = demo_url.rstrip('.,;:!?"\'/)')
+                      if not demo_url.startswith('http'):
+                          demo_url = f"https://{demo_url}"
+                      content.append(create_adf_text("Demo Page: "))
+                      content.append(create_adf_hyperlink("View Demo", demo_url))
+                      content.append(create_adf_text("\n"))
+                      break
+              
+              # Create the formatted line for this commit
+              line_content = {
+                  "type": "paragraph",
+                  "content": content
+              }
+              
               for key in found:
-                  by_issue.setdefault(key, []).append(line)
+                  by_issue.setdefault(key, []).append(line_content)
 
-          payloads = [{"key":k,"comment":"\n".join(v)} for k,v in by_issue.items()]
+          # Create proper ADF payloads
+          payloads = []
+          for k, v in by_issue.items():
+              adf_comment = {
+                  "type": "doc",
+                  "version": 1,
+                  "content": v  # v is already a list of ADF paragraph objects
+              }
+              payloads.append({"key": k, "comment": adf_comment})
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
               f.write(f"payloads={json.dumps(payloads)}\n")
           PY
@@ -75,23 +151,9 @@ jobs:
 
           for p in payloads:
               url = f"{jira}/rest/api/3/issue/{p['key']}/comment"
-              # Jira Cloud uses Atlassian Document Format (ADF)
+              # Use the pre-built ADF comment structure
               comment_body = {
-                  "body": {
-                      "type": "doc",
-                      "version": 1,
-                      "content": [
-                          {
-                              "type": "paragraph",
-                              "content": [
-                                  {
-                                      "type": "text",
-                                      "text": p["comment"]
-                                  }
-                              ]
-                          }
-                      ]
-                  }
+                  "body": p["comment"]  # p["comment"] is already in ADF format
               }
               data = json.dumps(comment_body).encode()
               req = urllib.request.Request(url, data=data, headers={
