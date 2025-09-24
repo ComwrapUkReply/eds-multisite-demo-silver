@@ -52,8 +52,12 @@ jobs:
               
               def replace_url(match):
                   url = match.group(0)
-                  # Use the URL as both display text and link
-                  return f"[{url}|{url}]"
+                  # Create a shorter display text for the hyperlink
+                  if len(url) > 50:
+                      display_text = url[:47] + "..."
+                  else:
+                      display_text = url
+                  return f"[{display_text}|{url}]"
               
               return re.sub(url_pattern, replace_url, text)
           
