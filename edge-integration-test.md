@@ -8,3 +8,4 @@ This file validates the GitHub Actions workflow integration with Jira ticket EDG
 - Integration Status: Active
 
 The workflow should automatically post commit details to the Jira ticket.
+Updated integration test status: PASSED
