@@ -23,7 +23,23 @@ jobs:
           python3 - << 'PY'
           import json, re, os
           
-          commits = json.loads(os.environ["COMMITS"])
+          commits_json = os.environ.get("COMMITS", "[]")
+          if not commits_json or commits_json.strip() == "":
+              commits_json = "[]"
+          
+          try:
+              commits = json.loads(commits_json)
+          except json.JSONDecodeError as e:
+              print(f"Error parsing commits JSON: {e}")
+              print(f"Commits data: {commits_json}")
+              commits = []
+          
+          if not commits:
+              print("No commits found, skipping Jira comment generation")
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                  f.write("payloads=[]\n")
+              exit(0)
+          
           key_re = re.compile(r"\b[A-Z][A-Z0-9]+-\d+\b")
           by_issue = {}
           
@@ -38,13 +54,14 @@ jobs:
                   by_issue.setdefault(key, []).append(line)
 
           payloads = [{"key":k,"comment":"\n".join(v)} for k,v in by_issue.items()]
-          print("::set-output name=payloads::" + json.dumps(payloads))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"payloads={json.dumps(payloads)}\n")
           PY
         env:
           COMMITS: ${{ steps.commits.outputs.commits }}
 
       - name: Post comments to Jira
-        if: ${{ steps.build.outputs.payloads != '' }}
+        if: ${{ steps.build.outputs.payloads != '' && steps.build.outputs.payloads != '[]' }}
         run: |
           python3 - << 'PY'
           import json, os, base64, urllib.request
