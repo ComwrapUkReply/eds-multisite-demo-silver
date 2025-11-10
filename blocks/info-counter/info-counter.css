@@ -78,11 +78,11 @@
 
 /* Dark mode (On Dark) - White text */
 .info-counter-mode-dark .info-counter-digit-value {
-  color: #ffffff;
+  color: #fff;
 }
 
 .info-counter-mode-dark .info-counter-text p {
-  color: #ffffff;
+  color: #fff;
 }
 
 .info-counter-mode-dark {
@@ -95,11 +95,11 @@
 }
 
 .info-counter-mode-light .info-counter-text p {
-  color: #000000;
+  color: #000;
 }
 
 .info-counter-mode-light {
-  background: linear-gradient(to right, #f7f6f5, #ffffff);
+  background: linear-gradient(to right, #f7f6f5, #fff);
 }
 
 /* Variant classes for mode selection */
@@ -110,17 +110,17 @@
 
 .info-counter.dark .info-counter-digit-value,
 .info-counter.on-dark .info-counter-digit-value {
-  color: #ffffff;
+  color: #fff;
 }
 
 .info-counter.dark .info-counter-text p,
 .info-counter.on-dark .info-counter-text p {
-  color: #ffffff;
+  color: #fff;
 }
 
 .info-counter.light,
 .info-counter.on-light {
-  background: linear-gradient(to right, #f7f6f5, #ffffff);
+  background: linear-gradient(to right, #f7f6f5, #fff);
 }
 
 .info-counter.light .info-counter-digit-value,
@@ -130,7 +130,7 @@
 
 .info-counter.light .info-counter-text p,
 .info-counter.on-light .info-counter-text p {
-  color: #000000;
+  color: #000;
 }
 
 /* Mobile Responsive Design */
@@ -140,42 +140,41 @@
     gap: 0;
     flex-direction: column;
     align-items: center;
-    min-height: auto;
   }
-  
+
   .info-counter-number {
     height: 100px;
     margin-bottom: 0;
   }
-  
+
   .info-counter-digit {
     height: 100px;
     line-height: 100px;
   }
-  
+
   .info-counter-digit-value {
     font-size: 88px;
     line-height: 100px;
   }
-  
+
   .info-counter-text {
     height: auto;
     max-width: 100%;
     text-align: center;
     padding: 0 20px;
   }
-  
+
   .info-counter-text p {
     font-size: 18px;
     line-height: 24px;
     text-align: left;
   }
-  
+
   /* Mobile dark mode adjustments */
   .info-counter-mode-dark .info-counter-text p {
     text-align: left;
   }
-  
+
   /* Mobile light mode adjustments */
   .info-counter-mode-light .info-counter-text p {
     text-align: left;
@@ -187,11 +186,11 @@
   .info-counter {
     padding: 50px 40px;
   }
-  
+
   .info-counter-text {
     max-width: 500px;
   }
-  
+
   .info-counter-text p {
     font-size: 22px;
     line-height: 28px;
@@ -203,25 +202,9 @@
   .info-counter-digit-value {
     transition: none;
   }
-  
+
   .info-counter {
     animation: none;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .info-counter-mode-dark .info-counter-digit-value,
-  .info-counter-mode-dark .info-counter-text p {
-    color: #ffffff;
-  }
-  
-  .info-counter-mode-light .info-counter-digit-value {
-    color: #0000ff;
-  }
-  
-  .info-counter-mode-light .info-counter-text p {
-    color: #000000;
   }
 }
 
@@ -230,4 +213,3 @@
   outline: 2px solid #0063be;
   outline-offset: 4px;
 }
-
