@@ -7,6 +7,41 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 const generateUniqueId = () => `tab-${Math.random().toString(36).substr(2, 9)}`;
 
 /**
+ * Extracts tab data from the block structure
+ * Supports both document-based (table rows) and Universal Editor (nested divs) formats
+ * @param {Element} block - The block element
+ * @returns {Array} Array of tab objects with title and content
+ */
+const extractTabsData = (block) => {
+  const tabs = [];
+
+  // Check if this is a Universal Editor structure (divs with data-aue-* attributes)
+  // or a document-based structure (table rows)
+  const rows = [...block.children];
+
+  rows.forEach((row) => {
+    // Universal Editor: Each row is a div containing the tab item
+    // Structure: <div><div>title</div><div>content</div></div>
+    const cells = [...row.children];
+
+    if (cells.length >= 2) {
+      const titleCell = cells[0];
+      const contentCell = cells[1];
+
+      if (titleCell && contentCell) {
+        tabs.push({
+          title: titleCell.textContent.trim(),
+          content: contentCell.innerHTML,
+          row,
+        });
+      }
+    }
+  });
+
+  return tabs;
+};
+
+/**
  * Decorates the tabs block
  * @param {Element} block - The block element
  */
@@ -17,6 +52,15 @@ export default async function decorate(block) {
     tabButtonClass: 'tabs-tab-button',
     tabPanelClass: 'tabs-tab-panel',
   };
+
+  // Extract tabs data from block structure
+  const tabsData = extractTabsData(block);
+
+  if (tabsData.length === 0) {
+    // eslint-disable-next-line no-console
+    console.warn('Tabs block: No tabs found');
+    return;
+  }
 
   // Create tabs container structure
   const tabsContainer = document.createElement('div');
@@ -43,18 +87,10 @@ export default async function decorate(block) {
   const tabPanelsContainer = document.createElement('div');
   tabPanelsContainer.className = 'tabs-tab-panels';
 
-  // Extract tabs from block structure
-  const tabs = [...block.children].map((row, index) => {
-    const cells = [...row.children];
-    const titleCell = cells[0];
-    const contentCell = cells[1];
-
-    if (!titleCell || !contentCell) {
-      return null;
-    }
-
+  // Create tabs from extracted data
+  const tabs = tabsData.map((tabData, index) => {
     const uniqueId = generateUniqueId();
-    const title = titleCell.textContent.trim();
+    const { title, content, row } = tabData;
     const isActive = index === 0;
 
     // Create tab button
@@ -77,6 +113,7 @@ export default async function decorate(block) {
       button.classList.add(config.activeClass);
     }
 
+    // Move instrumentation from original row to button
     moveInstrumentation(row, button);
 
     // Create tab panel
@@ -94,14 +131,14 @@ export default async function decorate(block) {
     }
 
     // Transfer content to panel
-    panel.innerHTML = contentCell.innerHTML;
+    panel.innerHTML = content;
 
     return {
       button,
       panel,
       uniqueId,
     };
-  }).filter(Boolean);
+  });
 
   // Add buttons and panels to their containers
   tabs.forEach(({ button, panel }) => {
