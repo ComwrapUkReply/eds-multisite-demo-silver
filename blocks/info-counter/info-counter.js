@@ -10,78 +10,69 @@ const ANIMATION_CONFIG = {
 };
 
 /**
- * Animate a single digit from start to end
- * @param {HTMLElement} digitElement - The digit element to animate
- * @param {number} startValue - Starting value (usually 0)
- * @param {number} endValue - Ending value (0-9)
- * @param {number} duration - Animation duration in ms
- * @param {number} delay - Delay before starting animation in ms
+ * Update all digit elements to display a specific number
+ * @param {HTMLElement} counterElement - The counter container element
+ * @param {number} currentNumber - The current number to display
  */
-function animateDigit(digitElement, startValue, endValue, duration, delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const startTime = performance.now();
-      const animate = (currentTime) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
+function updateCounterDisplay(counterElement, currentNumber) {
+  const numberString = currentNumber.toString().padStart(
+    counterElement.querySelectorAll('.info-counter-digit').length,
+    '0',
+  );
+  const digits = counterElement.querySelectorAll('.info-counter-digit');
 
-        // Easing function for smooth animation
-        const easedProgress = 1 - (1 - progress) ** 3;
-
-        const currentValue = Math.floor(startValue + (endValue - startValue) * easedProgress);
-        digitElement.textContent = currentValue;
-
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          digitElement.textContent = endValue;
-          resolve();
-        }
-      };
-      requestAnimationFrame(animate);
-    }, delay);
+  digits.forEach((digitContainer, index) => {
+    const digitElement = digitContainer.querySelector('.info-counter-digit-value');
+    if (digitElement) {
+      digitElement.textContent = numberString[index] || '0';
+    }
   });
 }
 
 /**
- * Animate counter by sliding digits vertically
+ * Animate counter from 0 to target number
  * @param {HTMLElement} counterElement - The counter container element
  * @param {number} targetNumber - The target number to count to
+ * @returns {Promise<void>} Promise that resolves when animation completes
  */
-async function animateCounter(counterElement, targetNumber) {
-  const numberString = targetNumber.toString();
+function animateCounter(counterElement, targetNumber) {
   const digits = counterElement.querySelectorAll('.info-counter-digit');
 
   if (digits.length === 0) {
-    // eslint-disable-next-line no-console
-    console.warn('Info Counter: No digit containers found');
-    return;
+    return Promise.resolve();
   }
 
-  // Calculate delay for each digit (staggered animation)
-  const digitDelay = ANIMATION_CONFIG.DURATION / numberString.length;
+  return new Promise((resolve) => {
+    const startTime = performance.now();
+    const duration = ANIMATION_CONFIG.DURATION;
+    const startNumber = 0;
 
-  const animationPromises = [];
+    const animate = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
 
-  digits.forEach((digitContainer, index) => {
-    const digitElement = digitContainer.querySelector('.info-counter-digit-value');
-    if (!digitElement) {
-      // eslint-disable-next-line no-console
-      console.warn(`Info Counter: No digit value element found at index ${index}`);
-      return;
-    }
+      // Easing function for smooth animation (ease-out cubic)
+      const easedProgress = 1 - (1 - progress) ** 3;
 
-    const targetDigit = parseInt(numberString[index] || '0', 10);
-    const startDigit = 0; // Always start from 0
-    const delay = index * digitDelay;
+      // Calculate current number value
+      const currentNumber = Math.floor(
+        startNumber + (targetNumber - startNumber) * easedProgress,
+      );
 
-    // Animate from 0 to target digit
-    animationPromises.push(
-      animateDigit(digitElement, startDigit, targetDigit, ANIMATION_CONFIG.DURATION, delay),
-    );
+      // Update all digits to show current number
+      updateCounterDisplay(counterElement, currentNumber);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        // Ensure final value is set exactly
+        updateCounterDisplay(counterElement, targetNumber);
+        resolve();
+      }
+    };
+
+    requestAnimationFrame(animate);
   });
-
-  await Promise.all(animationPromises);
 }
 
 /**
@@ -92,12 +83,9 @@ function initializeCounterAnimation(block) {
   const counterElement = block.querySelector('.info-counter-number');
   if (!counterElement) return;
 
-  const targetNumberText = block.dataset.targetNumber || counterElement.textContent.trim();
-  const targetNumber = parseInt(targetNumberText, 10);
+  const targetNumber = parseInt(block.dataset.targetNumber, 10);
 
   if (Number.isNaN(targetNumber) || targetNumber < 0) {
-    // eslint-disable-next-line no-console
-    console.warn('Info Counter: Invalid target number', targetNumberText);
     return;
   }
 
@@ -134,16 +122,12 @@ function initializeCounterAnimation(block) {
 function createDigitContainers(numberString) {
   const fragment = document.createDocumentFragment();
 
-  // Always start from 0 for animation
-  // Create containers for target number digits
   numberString.split('').forEach(() => {
     const digitContainer = document.createElement('div');
     digitContainer.className = 'info-counter-digit';
 
     const digitValue = document.createElement('span');
     digitValue.className = 'info-counter-digit-value';
-
-    // Start all digits at 0 - they will animate to target
     digitValue.textContent = '0';
     digitValue.setAttribute('aria-hidden', 'true');
 
@@ -155,6 +139,171 @@ function createDigitContainers(numberString) {
 }
 
 /**
+ * Remove Universal Editor attributes from HTML element
+ * @param {HTMLElement} element - Element to clean
+ */
+function removeAueAttributes(element) {
+  const attrs = element.attributes;
+  const attrsToRemove = [];
+
+  for (let i = 0; i < attrs.length; i += 1) {
+    const attrName = attrs[i].name;
+    if (attrName.startsWith('data-aue-') || attrName.startsWith('data-richtext-')) {
+      attrsToRemove.push(attrName);
+    }
+  }
+
+  attrsToRemove.forEach((attr) => element.removeAttribute(attr));
+
+  // Recursively clean child elements
+  Array.from(element.children).forEach((child) => removeAueAttributes(child));
+}
+
+/**
+ * Extract number from text
+ * @param {string} text - Text to extract number from
+ * @returns {number|null} Extracted number or null
+ */
+function extractNumber(text) {
+  const match = text.match(/\d+/);
+  return match ? parseInt(match[0], 10) : null;
+}
+
+/**
+ * Extract content from block rows
+ * @param {Array<HTMLElement>} rows - Block rows
+ * @returns {Object} Extracted content with targetNumber, descriptionText, descriptionHTML
+ */
+function extractContent(rows) {
+  let targetNumber = null;
+  let descriptionText = '';
+  let descriptionHTML = '';
+
+  // Process first row cells (Universal Editor structure)
+  const firstRow = rows[0];
+  const cells = [...firstRow.children];
+
+  cells.forEach((cell) => {
+    const aueProp = cell.getAttribute('data-aue-prop');
+    const aueType = cell.getAttribute('data-aue-type');
+    const cellText = cell.textContent.trim();
+    const cellHTML = cell.innerHTML.trim();
+
+    if (!cellText && !cellHTML) return;
+
+    // Extract number
+    if (aueProp === 'number' || cellText.match(/^\d+$/)) {
+      if (targetNumber === null && cellText) {
+        targetNumber = extractNumber(cellText);
+      }
+      return;
+    }
+
+    // Extract richtext
+    if (aueProp === 'text' || aueType === 'richtext') {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = cellHTML;
+
+      Array.from(tempDiv.children).forEach((child) => removeAueAttributes(child));
+
+      const cleanedHTML = tempDiv.innerHTML.trim();
+      const cleanedText = tempDiv.textContent.trim();
+
+      if (cleanedText || cleanedHTML) {
+        descriptionText = cleanedText || cellText;
+        descriptionHTML = cleanedHTML || cellHTML;
+      }
+      return;
+    }
+
+    // Fallback: extract plain text
+    if (!aueProp && cellText && !descriptionText) {
+      descriptionText = cellText;
+      descriptionHTML = cellHTML || cellText;
+    }
+  });
+
+  // Fallback: check other rows for text
+  if (!descriptionText && rows.length > 1) {
+    for (let i = 1; i < rows.length; i += 1) {
+      const rowText = rows[i].textContent.trim();
+      const rowHTML = rows[i].innerHTML.trim();
+
+      if (rowText && !rowText.match(/^\d+$/)) {
+        descriptionText = rowText;
+        descriptionHTML = rowHTML || rowText;
+        break;
+      }
+    }
+  }
+
+  // Final fallback: extract from all block content
+  if (targetNumber === null || !descriptionText) {
+    const allText = rows.map((r) => r.textContent).join(' ').trim();
+    const numberMatch = allText.match(/\d+/);
+
+    if (numberMatch && targetNumber === null) {
+      targetNumber = parseInt(numberMatch[0], 10);
+    }
+
+    if (!descriptionText && numberMatch) {
+      descriptionText = allText.replace(numberMatch[0], '').trim();
+    }
+  }
+
+  return {
+    targetNumber: targetNumber || 0,
+    descriptionText,
+    descriptionHTML,
+  };
+}
+
+/**
+ * Clean HTML string by removing Universal Editor attributes
+ * @param {string} html - HTML string to clean
+ * @returns {string} Cleaned HTML
+ */
+function cleanHTML(html) {
+  return html.replace(/\s*data-(aue|richtext)-[^=]*="[^"]*"/g, '');
+}
+
+/**
+ * Create text paragraph element
+ * @param {string} descriptionText - Plain text content
+ * @param {string} descriptionHTML - HTML content
+ * @returns {HTMLElement} Paragraph element
+ */
+function createTextParagraph(descriptionText, descriptionHTML) {
+  const textParagraph = document.createElement('p');
+  let cleanedHTML = descriptionHTML || descriptionText;
+
+  // Remove Universal Editor attributes
+  if (cleanedHTML.includes('data-aue-') || cleanedHTML.includes('data-richtext-')) {
+    cleanedHTML = cleanHTML(cleanedHTML);
+  }
+
+  // Check if HTML contains tags
+  const hasHTMLTags = cleanedHTML !== descriptionText && cleanedHTML.match(/<[^>]+>/);
+
+  if (hasHTMLTags) {
+    // If HTML has p wrapper, extract inner content
+    if (cleanedHTML.match(/^<p[^>]*>.*<\/p>$/i)) {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = cleanedHTML;
+      textParagraph.innerHTML = tempDiv.firstElementChild?.innerHTML || cleanedHTML;
+    } else {
+      // Use HTML directly
+      textParagraph.innerHTML = cleanedHTML;
+    }
+  } else {
+    // Use plain text
+    textParagraph.textContent = descriptionText;
+  }
+
+  return textParagraph;
+}
+
+/**
  * Decorate the info-counter block
  * @param {HTMLElement} block - The block element to decorate
  */
@@ -163,95 +312,8 @@ export default function decorate(block) {
 
   if (rows.length === 0) return;
 
-  // Extract content BEFORE clearing the block
-  const firstRow = rows[0];
-  const cells = [...firstRow.children];
-
-  let targetNumber = null;
-  let descriptionText = '';
-  let descriptionHTML = '';
-
-  // Extract number and text from cells
-  // Handle Universal Editor content structure
-  cells.forEach((cell) => {
-    // Check for Universal Editor attributes
-    const aueProp = cell.getAttribute('data-aue-prop');
-    const cellText = cell.textContent.trim();
-    const cellHTML = cell.innerHTML.trim();
-
-    // Skip empty cells or Universal Editor placeholder elements
-    if (!cellText && !cellHTML) return;
-
-    // Check if this is a number field (Universal Editor)
-    if (aueProp === 'number' || cellText.match(/^\d+$/)) {
-      if (targetNumber === null && cellText) {
-        const numberMatch = cellText.match(/\d+/);
-        if (numberMatch) {
-          targetNumber = parseInt(numberMatch[0], 10);
-        }
-      }
-      return;
-    }
-
-    // Check if this is a text field (Universal Editor) or contains text
-    if (aueProp === 'text' || (!aueProp && cellText)) {
-      // Extract actual text content, filtering out empty Universal Editor elements
-      const textElements = cell.querySelectorAll('p, div, span');
-      let hasRealContent = false;
-
-      if (textElements.length > 0) {
-        // Check if any child element has actual text
-        textElements.forEach((el) => {
-          const elText = el.textContent.trim();
-          // Skip Universal Editor placeholder elements (empty with data-aue-prop)
-          if (elText && (!el.hasAttribute('data-aue-prop') || elText)) {
-            if (!descriptionText) {
-              descriptionText = elText;
-              descriptionHTML = el.innerHTML.trim();
-              hasRealContent = true;
-            }
-          }
-        });
-      }
-
-      // If no real content found in children, use cell content directly
-      if (!hasRealContent && cellText) {
-        // Filter out empty Universal Editor placeholders
-        const cleanText = cellText.replace(/\s+/g, ' ').trim();
-        if (cleanText) {
-          descriptionText = cleanText;
-          // Use textContent for HTML to avoid nested tags
-          descriptionHTML = cleanText;
-        }
-      }
-    }
-  });
-
-  // Fallback: if we have cells but didn't extract properly
-  if (cells.length >= 2 && !descriptionText) {
-    // Second cell should be text
-    const secondCell = cells[1];
-    const secondCellText = secondCell.textContent.trim();
-    if (secondCellText && !secondCellText.match(/^\d+$/)) {
-      descriptionText = secondCellText;
-      descriptionHTML = secondCellText;
-    }
-  }
-
-  // Fallback: try to extract from all rows
-  if (targetNumber === null) {
-    const allText = block.textContent.trim();
-    const numberMatch = allText.match(/\d+/);
-    if (numberMatch) {
-      targetNumber = parseInt(numberMatch[0], 10);
-      descriptionText = allText.replace(numberMatch[0], '').trim();
-    }
-  }
-
-  // If still no number found, use default
-  if (targetNumber === null || Number.isNaN(targetNumber)) {
-    targetNumber = 0;
-  }
+  // Extract content from block
+  const { targetNumber, descriptionText, descriptionHTML } = extractContent(rows);
 
   // Check for mode variant (dark or light)
   const isDarkMode = block.classList.contains('dark') || block.classList.contains('on-dark');
@@ -275,32 +337,19 @@ export default function decorate(block) {
   const digitContainers = createDigitContainers(numberString);
   numberContainer.appendChild(digitContainers);
 
+  // Initialize display to 0
+  updateCounterDisplay(numberContainer, 0);
+
   // Store target number for animation
-  block.dataset.targetNumber = targetNumber;
+  block.dataset.targetNumber = targetNumber.toString();
 
   // Create text container
   const textContainer = document.createElement('div');
   textContainer.className = 'info-counter-text';
 
-  // Only add text if we have actual content (not just empty Universal Editor placeholders)
+  // Add text if available
   if (descriptionText && descriptionText.trim()) {
-    // Clean up the text - remove any Universal Editor attributes from HTML
-    let cleanHTML = descriptionHTML || descriptionText;
-    if (cleanHTML.includes('data-aue-prop')) {
-      // Remove Universal Editor attributes from HTML string
-      cleanHTML = cleanHTML.replace(/\s*data-aue-[^=]*="[^"]*"/g, '');
-    }
-
-    // Create a single paragraph element (no nesting)
-    const textParagraph = document.createElement('p');
-    // Use textContent to avoid nested tags, or clean HTML if it's different
-    if (cleanHTML && cleanHTML !== descriptionText && !cleanHTML.match(/^<p[^>]*>.*<\/p>$/i)) {
-      // If HTML doesn't already have a p tag wrapper, use innerHTML
-      textParagraph.innerHTML = cleanHTML;
-    } else {
-      // Use textContent to ensure no nested tags
-      textParagraph.textContent = descriptionText;
-    }
+    const textParagraph = createTextParagraph(descriptionText, descriptionHTML);
     textContainer.appendChild(textParagraph);
   }
 
