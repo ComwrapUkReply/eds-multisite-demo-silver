@@ -6,7 +6,7 @@
 /* Info Counter Container */
 .info-counter-container .info-counter-wrapper {
   max-width: unset;
-  padding: var(--space-0);
+  display: flex;
 }
 
 /* Main info counter block */
@@ -61,17 +61,11 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 168px;
-  line-height: 0;
   flex-shrink: 0;
   max-width: 460px;
 }
 
 .info-counter-text p {
-  font-family: 'Albert Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-weight: 600; /* SemiBold */
-  font-size: 32px;
-  line-height: 40px;
   margin: 0;
   padding: 0;
 }
