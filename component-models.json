@@ -5658,6 +5658,28 @@
     ]
   },
   {
+    "id": "tab",
+    "fields": [
+      {
+        "component": "text",
+        "name": "title",
+        "value": "",
+        "label": "Tab Title",
+        "description": "Short descriptive title for the tab (e.g., 'Tab 1', 'Getting Started')",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "name": "content",
+        "value": "",
+        "label": "Tab Content",
+        "description": "Rich content displayed when tab is active (headings, paragraphs, lists, images, links)",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "teaser",
     "fields": [
       {

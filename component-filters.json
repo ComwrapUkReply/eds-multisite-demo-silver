@@ -27,7 +27,8 @@
       "accordion",
       "profile",
       "profiles-container",
-      "form"
+      "form",
+      "tabs"
     ]
   },
   {
@@ -115,6 +116,12 @@
     "id": "table-4-columns",
     "components": [
       "table-col-4"
+    ]
+  },
+  {
+    "id": "tabs",
+    "components": [
+      "tab"
     ]
   }
 ]
