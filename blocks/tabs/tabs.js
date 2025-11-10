@@ -15,13 +15,11 @@ const generateUniqueId = () => `tab-${Math.random().toString(36).substr(2, 9)}`;
 const extractTabsData = (block) => {
   const tabs = [];
 
-  // Check if this is a Universal Editor structure (divs with data-aue-* attributes)
-  // or a document-based structure (table rows)
+  // Get all direct children (rows)
   const rows = [...block.children];
 
   rows.forEach((row) => {
-    // Universal Editor: Each row is a div containing the tab item
-    // Structure: <div><div>title</div><div>content</div></div>
+    // Each row should have 2 cells: title and content
     const cells = [...row.children];
 
     if (cells.length >= 2) {
