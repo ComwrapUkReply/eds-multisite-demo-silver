@@ -5,7 +5,7 @@
  */
 
 const ANIMATION_CONFIG = {
-  DURATION: 2000, // Animation duration in milliseconds
+  DURATION: 10000, // Animation duration in milliseconds
   EASING: 'ease-out', // Animation easing function
 };
 
@@ -172,36 +172,69 @@ export default function decorate(block) {
   let descriptionHTML = '';
 
   // Extract number and text from cells
-  // First, try to find number in first cell, text in second cell
-  if (cells.length >= 2) {
-    // Two cells: first is number, second is text
-    const firstCellText = cells[0].textContent.trim();
-    const numberMatch = firstCellText.match(/^\d+$/);
-    if (numberMatch) {
-      targetNumber = parseInt(numberMatch[0], 10);
+  // Handle Universal Editor content structure
+  cells.forEach((cell) => {
+    // Check for Universal Editor attributes
+    const aueProp = cell.getAttribute('data-aue-prop');
+    const cellText = cell.textContent.trim();
+    const cellHTML = cell.innerHTML.trim();
+
+    // Skip empty cells or Universal Editor placeholder elements
+    if (!cellText && !cellHTML) return;
+
+    // Check if this is a number field (Universal Editor)
+    if (aueProp === 'number' || cellText.match(/^\d+$/)) {
+      if (targetNumber === null && cellText) {
+        const numberMatch = cellText.match(/\d+/);
+        if (numberMatch) {
+          targetNumber = parseInt(numberMatch[0], 10);
+        }
+      }
+      return;
     }
 
-    // Get text from second cell (preserve HTML)
-    if (cells[1].innerHTML.trim()) {
-      descriptionHTML = cells[1].innerHTML.trim();
-      descriptionText = cells[1].textContent.trim();
-    }
-  } else if (cells.length === 1) {
-    // Single cell: try to extract both number and text
-    const cellText = cells[0].textContent.trim();
-    const cellHTML = cells[0].innerHTML.trim();
+    // Check if this is a text field (Universal Editor) or contains text
+    if (aueProp === 'text' || (!aueProp && cellText)) {
+      // Extract actual text content, filtering out empty Universal Editor elements
+      const textElements = cell.querySelectorAll('p, div, span');
+      let hasRealContent = false;
 
-    // Try to find number first
-    const numberMatch = cellText.match(/\d+/);
-    if (numberMatch) {
-      targetNumber = parseInt(numberMatch[0], 10);
-      // Remove number from text
-      descriptionText = cellText.replace(numberMatch[0], '').trim();
-      descriptionHTML = cellHTML.replace(numberMatch[0], '').trim();
-    } else {
-      // No number found, treat entire cell as text
-      descriptionText = cellText;
-      descriptionHTML = cellHTML;
+      if (textElements.length > 0) {
+        // Check if any child element has actual text
+        textElements.forEach((el) => {
+          const elText = el.textContent.trim();
+          // Skip Universal Editor placeholder elements (empty with data-aue-prop)
+          if (elText && (!el.hasAttribute('data-aue-prop') || elText)) {
+            if (!descriptionText) {
+              descriptionText = elText;
+              descriptionHTML = el.innerHTML.trim();
+              hasRealContent = true;
+            }
+          }
+        });
+      }
+
+      // If no real content found in children, use cell content directly
+      if (!hasRealContent && cellText) {
+        // Filter out empty Universal Editor placeholders
+        const cleanText = cellText.replace(/\s+/g, ' ').trim();
+        if (cleanText) {
+          descriptionText = cleanText;
+          // Use textContent for HTML to avoid nested tags
+          descriptionHTML = cleanText;
+        }
+      }
+    }
+  });
+
+  // Fallback: if we have cells but didn't extract properly
+  if (cells.length >= 2 && !descriptionText) {
+    // Second cell should be text
+    const secondCell = cells[1];
+    const secondCellText = secondCell.textContent.trim();
+    if (secondCellText && !secondCellText.match(/^\d+$/)) {
+      descriptionText = secondCellText;
+      descriptionHTML = secondCellText;
     }
   }
 
@@ -249,12 +282,23 @@ export default function decorate(block) {
   const textContainer = document.createElement('div');
   textContainer.className = 'info-counter-text';
 
-  if (descriptionText || descriptionHTML) {
+  // Only add text if we have actual content (not just empty Universal Editor placeholders)
+  if (descriptionText && descriptionText.trim()) {
+    // Clean up the text - remove any Universal Editor attributes from HTML
+    let cleanHTML = descriptionHTML || descriptionText;
+    if (cleanHTML.includes('data-aue-prop')) {
+      // Remove Universal Editor attributes from HTML string
+      cleanHTML = cleanHTML.replace(/\s*data-aue-[^=]*="[^"]*"/g, '');
+    }
+
+    // Create a single paragraph element (no nesting)
     const textParagraph = document.createElement('p');
-    // Use HTML if available, otherwise use text
-    if (descriptionHTML && descriptionHTML !== descriptionText) {
-      textParagraph.innerHTML = descriptionHTML;
+    // Use textContent to avoid nested tags, or clean HTML if it's different
+    if (cleanHTML && cleanHTML !== descriptionText && !cleanHTML.match(/^<p[^>]*>.*<\/p>$/i)) {
+      // If HTML doesn't already have a p tag wrapper, use innerHTML
+      textParagraph.innerHTML = cleanHTML;
     } else {
+      // Use textContent to ensure no nested tags
       textParagraph.textContent = descriptionText;
     }
     textContainer.appendChild(textParagraph);
