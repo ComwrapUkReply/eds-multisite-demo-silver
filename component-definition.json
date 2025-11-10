@@ -710,6 +710,21 @@
           }
         },
         {
+          "title": "Info Counter",
+          "id": "info-counter",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Info Counter",
+                  "model": "info-counter"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Language Switcher",
           "id": "language-switcher",
           "plugins": {

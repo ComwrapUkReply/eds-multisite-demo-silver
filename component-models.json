@@ -5255,6 +5255,41 @@
     ]
   },
   {
+    "id": "info-counter",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "number",
+        "label": "Target Number",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Description Text",
+        "valueType": "string"
+      },
+      {
+        "component": "select",
+        "name": "mode",
+        "label": "Color Mode",
+        "options": [
+          {
+            "name": "On Dark (White Text)",
+            "value": "dark"
+          },
+          {
+            "name": "On Light (Brand Blue Text)",
+            "value": "light"
+          }
+        ],
+        "value": "light"
+      }
+    ]
+  },
+  {
     "id": "language-switcher",
     "fields": [
       {

@@ -27,7 +27,8 @@
       "accordion",
       "profile",
       "profiles-container",
-      "form"
+      "form",
+      "info-counter"
     ]
   },
   {
